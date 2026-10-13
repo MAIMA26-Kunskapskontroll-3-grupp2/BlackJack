@@ -1,2 +1,8 @@
-﻿Game game = new Game();
-game.Start();
+﻿class Program
+{
+    static void Main()
+    {
+        Game game = new Game();
+        game.Start();
+    }
+}
