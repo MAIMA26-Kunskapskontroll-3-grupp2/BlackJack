@@ -15,6 +15,11 @@ public class Round
     {
         // Deal the starting cards according to the rules
         // (Players get two open cards, Dealer gets one open and one hidden hole card)
+        foreach (Player player in _players)
+        {
+            player.AddCard(_deck.DealCard());
+            player.AddCard(_deck.DealCard());
+        }
     }
 
     public void PlayPlayersTurns(ConsoleUi ui)
