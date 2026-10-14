@@ -62,7 +62,7 @@ public class ConsoleUi
         {
             ShowCard(card);
         }
-        Console.WriteLine();
+        Console.WriteLine($"poäng: {player.Hand.CalculateValue()}");
     }
 
     // Show the dealers hand
@@ -76,7 +76,9 @@ public class ConsoleUi
             else
                 ShowCard(dealer.Hand.Cards[i]);
         }
-        Console.WriteLine();
+        Console.WriteLine(revealDealer
+            ? $"poäng: {dealer.Hand.CalculateValue()}"
+            : "");
     }
 
     // Gets the symbol to print for the rank.
