@@ -3,21 +3,34 @@ public class Round
     private Deck _deck;
     private Dealer _dealer;
     private List<Player> _players;
+    private ConsoleUi _ui;
 
-    public Round(Deck deck, Dealer dealer, List<Player> players)
+
+    public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui)
     {
         _deck = deck;
         _dealer = dealer;
         _players = players;
+        _ui = ui;
     }
 
+    // Deal the starting cards according to the rules
     public void InitialDeal()
     {
-        // Deal the starting cards according to the rules
         // (Players get two open cards, Dealer gets one open and one hidden hole card)
+        foreach (Player player in _players)
+        {
+            player.AddCard(_deck.DealCard());
+            player.AddCard(_deck.DealCard());
+        }
+
+        _dealer.AddCard(_deck.DealCard());
+        _dealer.AddCard(_deck.DealCard());
+
+        _ui.ShowHands(_dealer, _players, false);
     }
 
-    public void PlayPlayersTurns(ConsoleUi ui)
+    public void PlayPlayersTurns()
     {
         // Loop through the players and ask for their choices through the ui (hit/stand)
         foreach (Player player in _players)
@@ -27,15 +40,15 @@ public class Round
             while (playerTurnActive)
             {
                 // Show the players' current cards on the screen
-                // One of the dealer's card is still hidden, therefore the argument is false 
-                ui.ShowHands(_dealer,_players, false);
+                // One of the dealer's card is still hidden, therefore the argument is false
+                _ui.ShowHands(_dealer, _players, false);
 
                 // Ask the player for their choice of move - hit/stand
-                Move choice =  ui.AskForMove(player);
+                Move choice = _ui.AskForMove(player);
 
-                if(choice == Move.Hit)
+                if (choice == Move.Hit)
                 {
-                    // Player gets another card 
+                    // Player gets another card
                     player.AddCard(_deck.DealCard());
                 }
                 else if(choice == Move.Stand)

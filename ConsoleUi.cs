@@ -5,9 +5,15 @@ public class ConsoleUi
         // Print the main menu
     }
 
+    // Print the current cards of the players and the dealer
     public void ShowHands(Dealer dealer, List<Player> players, bool revealDealer)
     {
-        // Print the current cards and values of all contestans on the screen as text
+        foreach (Player player in players)
+        {
+            ShowPlayerHand(player);
+        }
+
+        ShowDealerHand(dealer, revealDealer);
     }
 
     public Move AskForMove(Player player)
@@ -47,5 +53,75 @@ public class ConsoleUi
     public void ShowOutcome(Player player, Outcome outcome)
     {
         // Print out the final results (who won, lost or got a push)
+    }
+
+    private void ShowPlayerHand(Player player)
+    {
+        Console.Write($"{player.Name}: ");
+        foreach (Card card in player.Hand.Cards)
+        {
+            ShowCard(card);
+        }
+        Console.WriteLine();
+    }
+
+    // Show the dealers hand
+    private void ShowDealerHand(Dealer dealer, bool revealDealer)
+    {
+        Console.Write($"{dealer.Name}: ");
+        for (int i = 0; i < dealer.Hand.Cards.Count; i++)
+        {
+            if (i == 1 && !revealDealer)
+                ShowHiddenCard();
+            else
+                ShowCard(dealer.Hand.Cards[i]);
+        }
+        Console.WriteLine();
+    }
+
+    // Gets the symbol to print for the rank.
+    private string GetRankSymbol(Rank rank)
+    {
+        if (rank <= Rank.Ten)
+            return ((int)rank).ToString();
+
+        switch (rank)
+        {
+            case Rank.Jack: return "J";
+            case Rank.Queen: return "Q";
+            case Rank.King: return "K";
+            case Rank.Ace: return "A";
+        }
+        return "?";
+    }
+
+    // Gets the symbol to print for the suit.
+    private string GetSuitSymbol(Suit suit)
+    {
+        switch (suit)
+        {
+            case Suit.Hearts: return "♥";
+            case Suit.Diamonds: return "♦";
+            case Suit.Clubs: return "♣";
+            case Suit.Spades: return "♠";
+        }
+        return "?";
+    }
+
+    // Prints the symbol for the suit in appropriate color.
+    private void ShowCard(Card card)
+    {
+        Console.ForegroundColor = card.Suit is Suit.Diamonds or Suit.Hearts
+        ? ConsoleColor.Red : ConsoleColor.White;
+
+        Console.Write(GetSuitSymbol(card.Suit));
+        Console.ResetColor();
+        Console.Write($"{GetRankSymbol(card.Rank)} ");
+    }
+
+    // Prints the backside of the dealers hidden card.
+    private void ShowHiddenCard()
+    {
+        Console.Write("▒▒ ");
     }
 }
