@@ -3,26 +3,30 @@ public class Round
     private Deck _deck;
     private Dealer _dealer;
     private List<Player> _players;
+    private ConsoleUi _ui;
 
-    public Round(Deck deck, Dealer dealer, List<Player> players)
+
+    public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui)
     {
         _deck = deck;
         _dealer = dealer;
         _players = players;
+        _ui = ui;
     }
 
+    // Deal the starting cards according to the rules
     public void InitialDeal()
     {
-        // Deal the starting cards according to the rules
         // (Players get two open cards, Dealer gets one open and one hidden hole card)
         foreach (Player player in _players)
         {
             player.AddCard(_deck.DealCard());
             player.AddCard(_deck.DealCard());
         }
+        _ui.ShowHands(_dealer, _players, false);
     }
 
-    public void PlayPlayersTurns(ConsoleUi ui)
+    public void PlayPlayersTurns()
     {
         // Loop through the players and ask for their choices through the ui (hit/stand)
     }

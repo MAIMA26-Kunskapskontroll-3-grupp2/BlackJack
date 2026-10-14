@@ -20,5 +20,7 @@ public class Game
     private void PlayRound()
     {
         // Check the deck, create a Round object and execute the round's phases
+        Round round = new(_deck, _dealer, _players, _ui);
+        round.InitialDeal();
     }
 }
