@@ -36,15 +36,15 @@ public class Round
             while (playerTurnActive)
             {
                 // Show the players' current cards on the screen
-                // One of the dealer's card is still hidden, therefore the argument is false 
-                ui.ShowHands(_dealer,_players, false);
+                // One of the dealer's card is still hidden, therefore the argument is false
+                _ui.ShowHands(_dealer, _players, false);
 
                 // Ask the player for their choice of move - hit/stand
-                Move choice =  ui.AskForMove(player);
+                Move choice = _ui.AskForMove(player);
 
-                if(choice == Move.Hit)
+                if (choice == Move.Hit)
                 {
-                    // Player gets another card 
+                    // Player gets another card
                     player.AddCard(_deck.DealCard());
                 }
                 else if(choice == Move.Stand)
