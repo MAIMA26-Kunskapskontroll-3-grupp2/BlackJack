@@ -37,6 +37,11 @@ public class Round
                 {
                     // Player gets another card 
                     player.AddCard(_deck.DealCard());
+
+                    if(player.Hand.IsBust())
+                    {
+                        playerTurnActive = false;
+                    }
                 }
                 else if(choice == Move.Stand)
                 {
