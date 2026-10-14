@@ -19,7 +19,10 @@ public class ConsoleUi
             // Read userinput
             // Used char instead of string since we're only reading one character
             char userInput = Console.ReadKey().KeyChar;
-            Console.ReadKey();
+
+            // Press any key to confirm the choice above
+            // Setting it to "true" here prevents the second character from being printed to the screen
+            Console.ReadKey(true);
 
             // Check if the userinput is whitespace: enter/tab/space
             if (char.IsWhiteSpace(userInput))
@@ -28,19 +31,16 @@ public class ConsoleUi
                 continue;
             }
             // If the userinput is in lowercase, convert it to uppercase
-            else if (char.ToUpper(userInput) == 'K')
+            if (char.ToUpper(userInput) == 'K')
             {
                 return Move.Hit;
             }
-            else if (char.ToUpper(userInput) == 'S')
+
+            if (char.ToUpper(userInput) == 'S')
             {
                 return Move.Stand;
             }
-            else
-            {
-                Console.WriteLine("\nDet alternativet existerar inte.");
-                continue;
-            }
+            Console.WriteLine("\nDet alternativet existerar inte.");
         }
     }
 
