@@ -23,6 +23,10 @@ public class Round
             player.AddCard(_deck.DealCard());
             player.AddCard(_deck.DealCard());
         }
+
+        _dealer.AddCard(_deck.DealCard());
+        _dealer.AddCard(_deck.DealCard());
+
         _ui.ShowHands(_dealer, _players, false);
     }
 

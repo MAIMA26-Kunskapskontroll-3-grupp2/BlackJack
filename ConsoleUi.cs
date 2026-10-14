@@ -65,9 +65,18 @@ public class ConsoleUi
         Console.WriteLine();
     }
 
+    // Show the dealers hand
     private void ShowDealerHand(Dealer dealer, bool revealDealer)
     {
-        // Show the dealers hand
+        Console.Write($"{dealer.Name}: ");
+        for (int i = 0; i < dealer.Hand.Cards.Count; i++)
+        {
+            if (i == 1 && !revealDealer)
+                ShowHiddenCard();
+            else
+                ShowCard(dealer.Hand.Cards[i]);
+        }
+        Console.WriteLine();
     }
 
     // Gets the symbol to print for the rank.
@@ -108,5 +117,11 @@ public class ConsoleUi
         Console.Write(GetSuitSymbol(card.Suit));
         Console.ResetColor();
         Console.Write($"{GetRankSymbol(card.Rank)} ");
+    }
+
+    // Prints the backside of the dealers hidden card.
+    private void ShowHiddenCard()
+    {
+        Console.Write("▒▒ ");
     }
 }
