@@ -38,8 +38,12 @@ public class Round
                     // Player gets another card 
                     player.AddCard(_deck.DealCard());
 
+                    // Check if you're busted
                     if(player.Hand.IsBust())
                     {
+                        // Display 'you're busted' message 
+                        ui.ShowBustMessage(player);
+                        // End the player turn
                         playerTurnActive = false;
                     }
                 }
