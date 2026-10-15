@@ -78,6 +78,12 @@ public class ConsoleUi
         }
         Console.WriteLine();
     }
+    // Display the dealer's upcard (the first card that is visible to the players)
+public void ShowDealerUpCard(Dealer dealer)
+{
+    Card up = dealer.UpCard();
+    Console.WriteLine($"Dealer's upcard: {up}");
+}
 
     // Gets the symbol to print for the rank.
     private string GetRankSymbol(Rank rank)

@@ -27,6 +27,8 @@ public class Round
         _dealer.AddCard(_deck.DealCard());
         _dealer.AddCard(_deck.DealCard());
 
+        _ui.ShowDealerUpCard(_dealer);  // Show the dealers upcard (the first card, which is visible to the player)
+
         _ui.ShowHands(_dealer, _players, false);
     }
 
