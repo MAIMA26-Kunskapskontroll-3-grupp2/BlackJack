@@ -72,27 +72,27 @@ public class Round
 {
     var results = new Dictionary<Player, Outcome>();
 
-    int dealerValue = _dealer.Hand.GetValue();
+   int dealerValue = _dealer.Hand.CalculateValue();
 
     foreach (var player in _players)
     {
-        int playerValue = player.Hand.GetValue();
-
-        if (playerValue > 21)
+        int playerValue = player.Hand.CalculateValue();
+               
+         if (playerValue > 21)
         {
-            results[player] = Outcome.Loss;
+            results[player] = Outcome.Lose;
         }
-        else if (dealerValue > 21)
+        else if (playerValue < dealerValue)
         {
-            results[player] = Outcome.Win;
-        }
+            results[player] = Outcome.Lose;
+            }
         else if (playerValue > dealerValue)
         {
             results[player] = Outcome.Win;
         }
         else if (playerValue < dealerValue)
         {
-            results[player] = Outcome.Loss;
+            results[player] = Outcome.Lose;
         }
         else
         {
@@ -108,8 +108,8 @@ public class Round
     foreach (var player in _players)
     {
         // Placeholder logic until the group implements real outcome rules.
-        int playerValue = player.Hand.GetValue();
-        int dealerValue = _dealer.Hand.GetValue();
+        int playerValue = player.Hand.CalculateValue();
+        int dealerValue = _dealer.Hand.CalculateValue();
 
         bool playerWins = playerValue > dealerValue;
 

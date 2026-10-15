@@ -7,8 +7,6 @@ public class Game
     private ConsoleUi _ui = new ConsoleUi();
 
     public void Start()
-{
-    while (true)
     {
         Round round = new Round(_deck, _dealer, _players, _ui);
 
@@ -20,10 +18,7 @@ public class Game
 
         // Visa meny, fråga om ny runda osv
     }
-}
-
-
-    private void MainMenu()
+     private void MainMenu()
     {
         // Game-loop
     }
