@@ -7,10 +7,21 @@ public class Game
     private ConsoleUi _ui = new ConsoleUi();
 
     public void Start()
+{
+    while (true)
     {
-        // Load players from _storage
-        // Start MainMenu()
+        Round round = new Round(_deck, _dealer, _players, _ui);
+
+        round.InitialDeal();
+        round.PlayPlayersTurns();
+        round.PlayDealerTurn();
+        round.DetermineOutcomes();
+        round.FinishRound();
+
+        // Visa meny, fråga om ny runda osv
     }
+}
+
 
     private void MainMenu()
     {
