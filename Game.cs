@@ -7,11 +7,18 @@ public class Game
     private ConsoleUi _ui = new ConsoleUi();
 
     public void Start()
-    {
-        // Load players from _storage
-        // Start MainMenu()
-    }
+{
+    Round round = new Round(_deck, _dealer, _players, _ui);
 
+    round.InitialDeal();        // Funkar
+    round.PlayPlayersTurns();   // Funkar
+
+    Console.WriteLine("Dealer visar sina kort:");
+    _ui.ShowHands(_dealer, _players, true);
+
+    var results = round.DetermineOutcomes(); // Finns (tom)
+    Console.WriteLine("Outcomes beräknade (placeholder).");
+}
     private void MainMenu()
     {
         // Game-loop
