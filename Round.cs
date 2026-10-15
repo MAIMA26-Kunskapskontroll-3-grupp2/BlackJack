@@ -62,13 +62,66 @@ public class Round
 
     public void PlayDealerTurn()
     {
-        // Execute the dealer's hand based on ShouldHit()
+       while (_dealer.ShouldHit())
+        {
+            _dealer.AddCard(_deck.DealCard());
+        }
     }
 
-    public Dictionary<Player, Outcome> DetermineOutcomes()
+ public Dictionary<Player, Outcome> DetermineOutcomes()
+{
+    var results = new Dictionary<Player, Outcome>();
+
+    int dealerValue = _dealer.Hand.GetValue();
+
+    foreach (var player in _players)
     {
-        // Compare the players' hands vs the dealer's and update the results
-        // (Handles busts, highest hands, pushes and natural 21 wins)
-        return new Dictionary<Player, Outcome>();
+        int playerValue = player.Hand.GetValue();
+
+        if (playerValue > 21)
+        {
+            results[player] = Outcome.Loss;
+        }
+        else if (dealerValue > 21)
+        {
+            results[player] = Outcome.Win;
+        }
+        else if (playerValue > dealerValue)
+        {
+            results[player] = Outcome.Win;
+        }
+        else if (playerValue < dealerValue)
+        {
+            results[player] = Outcome.Loss;
+        }
+        else
+        {
+            results[player] = Outcome.Push;
+        }
     }
+
+    return results;
+}
+
+    public void FinishRound()
+{
+    foreach (var player in _players)
+    {
+        // Placeholder logic until the group implements real outcome rules.
+        int playerValue = player.Hand.GetValue();
+        int dealerValue = _dealer.Hand.GetValue();
+
+        bool playerWins = playerValue > dealerValue;
+
+        if (playerWins)
+        {
+            // Save result to file (text shown to user is Swedish)
+            ResultStorage.Save("Player wins");
+        }
+        else
+        {
+            ResultStorage.Save("Dealer wins");
+        }
+    }
+}
 }
