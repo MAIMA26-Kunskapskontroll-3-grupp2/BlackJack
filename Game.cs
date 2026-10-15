@@ -8,6 +8,14 @@ public class Game
 
     public void Start()
     {
+        // Test code
+        Player eddie = new Player("Eddie");
+        ConsoleUi ui = new ConsoleUi();
+        _players.Add(eddie);
+        Round round = new Round(new Deck(), new Dealer(), _players);
+        
+        round.PlayPlayersTurns(ui);
+
         // Load players from _storage
         // Start MainMenu()
     }
