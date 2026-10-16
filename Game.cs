@@ -8,7 +8,6 @@ public class Game
 
     public void Start()
     {
-        
          _players.Add(new Player("Testspelare"));
          
         Round round = new Round(_deck, _dealer, _players, _ui);
