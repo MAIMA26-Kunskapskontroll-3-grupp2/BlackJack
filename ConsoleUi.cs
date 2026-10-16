@@ -177,8 +177,8 @@ public class ConsoleUi
         ? ConsoleColor.Red : ConsoleColor.White;
 
         Console.Write(GetSuitSymbol(card.Suit));
-        Console.ResetColor();
         Console.Write($"{GetRankSymbol(card.Rank)} ");
+        Console.ResetColor();
     }
 
     // Prints the backside of the dealers hidden card.
