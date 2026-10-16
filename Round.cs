@@ -7,15 +7,15 @@ public class Round
     private GameStorage _storage;
 
 
-    public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui)
-    {
-        _deck = deck;
-        _dealer = dealer;
-        _players = players;
-        _ui = ui;
-    }
-
-    // Deal the starting cards according to the rules
+   public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui)
+{
+    _deck = deck;
+    _dealer = dealer;
+    _players = players;
+    _ui = ui;
+    _storage = new GameStorage();
+}
+// Deal the starting cards according to the rules
     public void InitialDeal()
     {
         // (Players get two open cards, Dealer gets one open and one hidden hole card)
@@ -103,26 +103,11 @@ public class Round
 
     return results;
 }
-
-    public void FinishRound()
+public void FinishRound()
 {
-    foreach (var player in _players)
-    {
-        // Placeholder logic until the group implements real outcome rules.
-        int playerValue = player.Hand.CalculateValue();
-        int dealerValue = _dealer.Hand.CalculateValue();
+    Dictionary<Player, Outcome> results = DetermineOutcomes();
 
-        bool playerWins = playerValue > dealerValue;
-
-        if (playerWins)
-        {
-            // Save result to file (text shown to user is Swedish)
-            _GameStorage.Save("Player wins");
-        }
-        else
-        {
-            _GameStorage.Save("Dealer wins");
-        }
-    }
+    _storage.Save(results, 1);
 }
 }
+    
