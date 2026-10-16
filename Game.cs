@@ -6,23 +6,30 @@ public class Game
     private GameStorage _storage = new GameStorage();
     private ConsoleUi _ui = new ConsoleUi();
 
-    public void Start()
+    public void Run()
     {
         // Load players from _storage
         // Start MainMenu()
-        _players.AddRange(
-            new Player("Tomas"),
-            new Player("Ai"),
-            new Player("Gentiana"),
-            new Player("Arne"),
-            new Player("Benjamin")
-        );
-        PlayRound();
+        while (true)
+        {
+            switch (_ui.MainMenu())
+            {
+                case 1: AddPlayer(); break;
+                case 2: RemovePlayer(); break;
+                case 3: ShowPlayers(); break;
+                case 4: PlayGame(); break;
+                case 5: return;
+            }
+        }
     }
 
-    private void MainMenu()
+    private void PlayGame()
     {
-        // Game-loop
+        if (_players.Count < 1)
+        {
+            _ui.ShowMessage("\nDet finns inga spelare. Var vänlig och lägg till minst en spelare.");
+            return;
+        }
     }
 
     private void PlayRound()
@@ -45,5 +52,53 @@ public class Game
         while (_dealer.Hand.CalculateValue() < 17)
             _dealer.AddCard(_deck.DealCard());
         _ui.ShowHands(_dealer, _players, true);
+    }
+
+    private void AddPlayer()
+    {
+        if (_players.Count >= 5)
+        {
+            _ui.ShowMessage("\nSpelet är fullt. Det finns redan 5 spelare.");
+            return;
+        }
+
+        string? name = _ui.GetString($"Ange spelarens namn: ");
+        if (name != null)
+            _players.Add(new(name));
+
+        ShowPlayers();
+    }
+
+    private void RemovePlayer()
+    {
+        if (_players.Count <= 0)
+        {
+            _ui.ShowMessage("\nDet finns inga spelare att ta bort.");
+            return;
+        }
+
+        int index = _ui.RemovePlayerMenu(_players.Select(p => p.Name).ToArray());
+
+        if (index == _players.Count)
+            return;
+
+        _players.RemoveAt(index);
+
+        ShowPlayers();
+    }
+
+    private void ShowPlayers()
+    {
+        if (_players.Count <= 0)
+        {
+            _ui.ShowMessage("\nDet finns inga spelare att visa.");
+            return;
+        }
+
+        _ui.ShowMessage("\nSpelare:");
+        for (int i = 0; i < _players.Count; i++)
+        {
+            _ui.ShowMessage($"{i + 1}. {_players[i].Name}");
+        }
     }
 }

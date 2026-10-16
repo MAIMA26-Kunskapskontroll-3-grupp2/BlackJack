@@ -1,11 +1,84 @@
+using System.Diagnostics.Contracts;
+using System.Dynamic;
+
 public class ConsoleUi
 {
-    public void ShowMenu()
+    // Show the main menu and get a reply.
+    public int MainMenu()
     {
-        // Print the main menu
+        while (true)
+        {
+            Console.WriteLine();
+            Console.WriteLine("1. Lägg till spelare");
+            Console.WriteLine("2. Ta bort spelare");
+            Console.WriteLine("3. Visa spelare");
+            Console.WriteLine("4. Börja spela");
+            Console.WriteLine("5. Avsluta spelet");
+            Console.Write("Vad vill du göra: ");
+
+            string? input = Console.ReadLine();
+            if (input != null)
+            {
+                if (int.TryParse(input, out int i))
+                {
+                    if (i is 1 or 2 or 3 or 4 or 5)
+                        return i;
+                }
+            }
+            Console.WriteLine("Ogiltigt val.");
+        }
     }
 
-    // Print the current cards of the players and the dealer
+    // Show the remove player menu and get a reply.
+    public int RemovePlayerMenu(string[] playerNames)
+    {
+        while (true)
+        {
+            Console.WriteLine();
+            for (int i = 0; i < playerNames.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {playerNames[i]}");
+            }
+            Console.WriteLine($"{playerNames.Length + 1}. Tillbaka till huvudmenyn");
+            Console.Write("Vilken spelare vill du ta bort: ");
+
+            string? input = Console.ReadLine();
+            if (input != null)
+            {
+                if (int.TryParse(input, out int i))
+                {
+                    i--;
+                    if (i >= 0 && i <= playerNames.Length)
+                        return i;
+                }
+            }
+            Console.WriteLine("Ogiltigt val.");
+        }
+    }
+
+    // Show a message and get a reply to it.
+    public string? GetString(string message)
+    {
+        Console.Write(message);
+
+        string? input = Console.ReadLine();
+        if (input != null)
+        {
+            input = input.Trim();
+            if (input.Length == 0)
+                input = null;
+        }
+
+        return input;
+    }
+
+    // Show a message.
+    public void ShowMessage(string message)
+    {
+        Console.WriteLine(message);
+    }
+
+    // Show the current cards of the players and the dealer
     public void ShowHands(Dealer dealer, List<Player> players, bool revealDealer)
     {
         foreach (Player player in players)
@@ -16,35 +89,21 @@ public class ConsoleUi
         ShowDealerHand(dealer, revealDealer);
     }
 
+    // Ask the player if they want to hit or stand
     public Move AskForMove(Player player)
     {
-        // Ask the player if they want to hit or stand
         while (true)
         {
             Console.WriteLine($"\n{player.Name} tryck på 'K' för att köpa eller 'S' för att stanna");
-            // Read userinput
-            // Used char instead of string since we're only reading one character
-            char userInput = Console.ReadKey().KeyChar;
-
-            // Press any key to confirm the choice above
-            // Setting it to "true" here prevents the second character from being printed to the screen
-            Console.ReadKey(true);
-
-            // Check if the userinput is whitespace: enter/tab/space
-            if (char.IsWhiteSpace(userInput))
+            string? input = Console.ReadLine();
+            if (input != null)
             {
-                Console.WriteLine("\nTom inmatning.");
-                continue;
-            }
-            // If the userinput is in lowercase, convert it to uppercase
-            if (char.ToUpper(userInput) == 'K')
-            {
-                return Move.Hit;
-            }
-
-            if (char.ToUpper(userInput) == 'S')
-            {
-                return Move.Stand;
+                input = input.ToUpper();
+                switch (input)
+                {
+                    case "K": return Move.Hit;
+                    case "S": return Move.Stand;
+                }
             }
             Console.WriteLine("\nDet alternativet existerar inte.");
         }
@@ -55,6 +114,7 @@ public class ConsoleUi
         // Print out the final results (who won, lost or got a push)
     }
 
+    // Show a players hand.
     private void ShowPlayerHand(Player player)
     {
         Console.Write($"{player.Name}: ");
@@ -65,7 +125,7 @@ public class ConsoleUi
         Console.WriteLine($"poäng: {player.Hand.CalculateValue()}");
     }
 
-    // Show the dealers hand
+    // Show the dealers hand.
     private void ShowDealerHand(Dealer dealer, bool revealDealer)
     {
         Console.Write($"{dealer.Name}: ");
