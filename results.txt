@@ -54,3 +54,15 @@ Gentiana | 20 | Push
 Arne | 12 | Lose
 Benjamin | 13 | Lose
 
+Runda 8
+Spelare | Poäng | Resultat
+Tomas | 19 | Push
+Ai | 20 | Win
+Gentiana | 15 | Lose
+Arne | 12 | Lose
+Benjamin | 11 | Lose
+
+Runda 9
+Spelare | Poäng | Resultat
+Gentiana | 16 | Win
+

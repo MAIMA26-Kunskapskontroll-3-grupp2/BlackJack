@@ -5,38 +5,53 @@ public class Game
     private Deck _deck = new Deck();
     private GameStorage _storage = new GameStorage();
     private ConsoleUi _ui = new ConsoleUi();
-
-    public void Start()
-{
-    _players.AddRange(new List<Player>
+    public void Run()
     {
-        new Player("Tomas"),
-        new Player("Ai"),
-        new Player("Gentiana"),
-        new Player("Arne"),
-        new Player("Benjamin")
-    });
+        // Läs in tidigare sparade resultat.
+        string[] savedResults = _storage.Load();
 
-   // Läs in tidigare sparade resultat.
-string[] savedResults = _storage.Load();
+        foreach (string line in savedResults)
+        {
+            if (!_storage.Validate(line))
+            {
+                _ui.ShowMessage("Felaktigt format i results.txt.");
+                return;
+            }
+        }
 
-foreach (string line in savedResults)
-{
-    if (!_storage.Validate(line))
-    {
-        Console.WriteLine("Felaktigt format i results.txt.");
-        return;
+        while (true)
+        {
+            switch (_ui.MainMenu())
+            {
+                case 1:
+                    AddPlayer();
+                    break;
+                case 2:
+                    RemovePlayer();
+                    break;
+                case 3:
+                    ShowPlayers();
+                    break;
+                case 4:
+                    PlayGame();
+                    break;
+                case 5:
+                    return;
+            }
+        }
     }
-}
 
-PlayRound();
-}
-     private void MainMenu()
+    private void PlayGame()
     {
-        // Game-loop
-    }
+        if (_players.Count < 1)
+        {
+            _ui.ShowMessage("\nDet finns inga spelare. Var vänlig och lägg till minst en spelare.");
+            return;
+        }
 
-    private void PlayRound()
+        PlayRound();
+    }
+       private void PlayRound()
     {
         // Check the deck, create a Round object and execute the round's phases
          Round round = new Round(_deck, _dealer, _players, _ui, _storage);
@@ -45,5 +60,51 @@ PlayRound();
         round.PlayDealerTurn();
         round.DetermineOutcomes();
         round.FinishRound();
+    }
+
+    private void AddPlayer()
+    {
+        if (_players.Count >= 5)
+        {
+            _ui.ShowMessage("\nSpelet är fullt. Det finns redan 5 spelare.");
+            return;
+        }
+
+        string? name = _ui.GetString($"Ange spelarens namn: ");
+        if (name != null)
+            _players.Add(new(name));
+
+        ShowPlayers();
+    }
+
+    private void RemovePlayer()
+    {
+        if (_players.Count <= 0)
+        {
+            _ui.ShowMessage("\nDet finns inga spelare att ta bort.");
+            return;
+        }
+
+        int index = _ui.RemovePlayerMenu(_players.Select(p => p.Name).ToArray());
+
+        if (index == _players.Count)
+            return;
+
+        _players.RemoveAt(index);
+
+        ShowPlayers();
+    }
+
+    private void ShowPlayers()
+    {
+        if (_players.Count <= 0)
+        {
+            _ui.ShowMessage("\nDet finns inga spelare att visa.");
+            return;
+        }_ui.ShowMessage("\nSpelare:");
+        for (int i = 0; i < _players.Count; i++)
+        {
+            _ui.ShowMessage($"{i + 1}. {_players[i].Name}");
+        }
     }
 }
