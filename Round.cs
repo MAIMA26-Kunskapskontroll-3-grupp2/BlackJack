@@ -7,13 +7,13 @@ public class Round
     private GameStorage _storage;
 
 
-   public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui)
+ public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui, GameStorage storage)
 {
     _deck = deck;
     _dealer = dealer;
     _players = players;
     _ui = ui;
-    _storage = new GameStorage();
+    _storage = storage;
 }
 // Deal the starting cards according to the rules
     public void InitialDeal()
@@ -107,7 +107,6 @@ public void FinishRound()
 {
     Dictionary<Player, Outcome> results = DetermineOutcomes();
 
-    _storage.Save(results, 1);
+    _storage.Save(results);
 }
 }
-    

@@ -7,27 +7,30 @@ public class Game
     private ConsoleUi _ui = new ConsoleUi();
 
     public void Start()
+{
+    _players.AddRange(new List<Player>
     {
-        // Load players from _storage
-        // Start MainMenu()
-        _players.AddRange(
-            new Player("Tomas"),
-            new Player("Ai"),
-            new Player("Gentiana"),
-            new Player("Arne"),
-            new Player("Benjamin")
-        );
-        PlayRound();
-    }
+        new Player("Tomas"),
+        new Player("Ai"),
+        new Player("Gentiana"),
+        new Player("Arne"),
+        new Player("Benjamin")
+    });
 
-        round.InitialDeal();
-        round.PlayPlayersTurns();
-        round.PlayDealerTurn();
-        round.DetermineOutcomes();
-        round.FinishRound();
+   // Läs in tidigare sparade resultat.
+string[] savedResults = _storage.Load();
 
-        // Visa meny, fråga om ny runda osv
+foreach (string line in savedResults)
+{
+    if (!_storage.Validate(line))
+    {
+        Console.WriteLine("Felaktigt format i results.txt.");
+        return;
     }
+}
+
+PlayRound();
+}
      private void MainMenu()
     {
         // Game-loop
@@ -36,22 +39,11 @@ public class Game
     private void PlayRound()
     {
         // Check the deck, create a Round object and execute the round's phases
-        Round round = new(_deck, _dealer, _players, _ui);
-
-        // Test code, to be replaced with proper game code
-        Console.WriteLine();
-        Console.WriteLine("Initial deal:");
-        round.InitialDeal();
-        foreach (Player player in _players)
-        {
-            while (player.Hand.CalculateValue() < 17)
-                player.AddCard(_deck.DealCard());
-        }
-
-        Console.WriteLine();
-        Console.WriteLine("End of automated test game:");
-        while (_dealer.Hand.CalculateValue() < 17)
-            _dealer.AddCard(_deck.DealCard());
-        _ui.ShowHands(_dealer, _players, true);
+         Round round = new Round(_deck, _dealer, _players, _ui, _storage);
+         round.InitialDeal();
+        round.PlayPlayersTurns();
+        round.PlayDealerTurn();
+        round.DetermineOutcomes();
+        round.FinishRound();
     }
 }

@@ -1,24 +1,54 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
 public class GameStorage
 {
-     private string path = "results.txt";
-    public void Save(Dictionary<Player, Outcome> results, int roundNumber)
+     private string path;
+
+// TEMPORARY TEST: Verify that player results are saved between rounds.
+// Remove after code review.
+public GameStorage(string path = "results.txt")
+{
+    this.path = path;
+}
+ public void Save(Dictionary<Player, Outcome> results)
+{
+    string[] existingLines = Load();
+    int lastRound = 0;
+
+    foreach (string line in existingLines)
     {
-         using (StreamWriter writer = new StreamWriter(path, true))
+        if (line.StartsWith("Runda ") &&
+            int.TryParse(line.Substring(6), out int number) &&
+            number > lastRound)
         {
-            writer.WriteLine($"Runda {roundNumber}");
-
-            foreach (var result in results)
-            {
-                writer.WriteLine($"{result.Key.Name}: {result.Value}");
-            }
-
-            writer.WriteLine();
+            lastRound = number;
         }
     }
+
+    int nextRound = lastRound + 1;
+
+    using (StreamWriter writer = new StreamWriter(path, true))
+{
+    if (existingLines.Length > 0 &&
+        !string.IsNullOrWhiteSpace(existingLines[^1]))
+    {
+        writer.WriteLine();
+    }
+
+    writer.WriteLine($"Runda {nextRound}");
+    writer.WriteLine("Spelare | Poäng | Resultat");
+
+        foreach (var result in results)
+        {
+            int points = result.Key.Hand.CalculateValue();
+            writer.WriteLine($"{result.Key.Name} | {points} | {result.Value}");
+        }
+
+        writer.WriteLine();
+    }
+}
 
     public string[] Load()
     {
@@ -31,7 +61,38 @@ public class GameStorage
     }
 
     public bool Validate(string line)
-    {
-        return line.StartsWith("Runda ") || line.Contains(":");
-    }
+{
+    if (string.IsNullOrWhiteSpace(line))
+        return true;
+
+    if (line.StartsWith("Runda "))
+        return int.TryParse(line.Substring(6), out int roundNumber)
+               && roundNumber > 0;
+
+    if (line.StartsWith("Spelare |"))
+    return true;
+
+    string[] parts = line.Split('|');
+
+    if (parts.Length != 3)
+        return false;
+
+    string name = parts[0].Trim();
+    string pointsText = parts[1].Trim();
+    string outcomeText = parts[2].Trim();
+
+    bool validName = name == "Tomas"
+                  || name == "Ai"
+                  || name == "Gentiana"
+                  || name == "Arne"
+                  || name == "Benjamin";
+
+    bool validPoints = int.TryParse(pointsText, out int points)
+                       && points >= 0;
+
+    bool validOutcome = Enum.TryParse<Outcome>(
+        outcomeText, out _);
+
+    return validName && validPoints && validOutcome;
+}
 }
