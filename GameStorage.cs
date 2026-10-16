@@ -1,13 +1,37 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
 public class GameStorage
 {
-    public void SavePlayers(List<Player> players)
+     private string path = "results.txt";
+    public void Save(Dictionary<Player, Outcome> results, int roundNumber)
     {
-        // Save players to a file
+         using (StreamWriter writer = new StreamWriter(path, true))
+        {
+            writer.WriteLine($"Runda {roundNumber}");
+
+            foreach (var result in results)
+            {
+                writer.WriteLine($"{result.Key.Name}: {result.Value}");
+            }
+
+            writer.WriteLine();
+        }
     }
 
-    public List<Player> LoadPlayers()
+    public string[] Load()
     {
-        // Read players from the same file
-        return new List<Player>();
+        if (!File.Exists(path))
+        {
+            return new string[0];
+        }
+
+        return File.ReadAllLines(path);
+    }
+
+    public bool Validate(string line)
+    {
+        return line.StartsWith("Runda ") || line.Contains(":");
     }
 }

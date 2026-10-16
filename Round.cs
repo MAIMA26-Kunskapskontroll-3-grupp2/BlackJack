@@ -4,6 +4,7 @@ public class Round
     private Dealer _dealer;
     private List<Player> _players;
     private ConsoleUi _ui;
+    private GameStorage _storage;
 
 
     public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui)
@@ -116,11 +117,11 @@ public class Round
         if (playerWins)
         {
             // Save result to file (text shown to user is Swedish)
-            ResultStorage.Save("Player wins");
+            _GameStorage.Save("Player wins");
         }
         else
         {
-            ResultStorage.Save("Dealer wins");
+            _GameStorage.Save("Dealer wins");
         }
     }
 }
