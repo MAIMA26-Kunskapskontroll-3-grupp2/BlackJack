@@ -37,6 +37,6 @@ public class Dealer : Participant
     // (if below 17, return true)
     public bool ShouldHit()
     {
-        return false; // Temporary placeholder
+        return Hand.CalculateValue() < 17;
     }
 }
