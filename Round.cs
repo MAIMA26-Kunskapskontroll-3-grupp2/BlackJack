@@ -4,17 +4,18 @@ public class Round
     private Dealer _dealer;
     private List<Player> _players;
     private ConsoleUi _ui;
+    private GameStorage _storage;
 
 
-    public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui)
-    {
-        _deck = deck;
-        _dealer = dealer;
-        _players = players;
-        _ui = ui;
-    }
-
-    // Deal the starting cards according to the rules
+ public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui, GameStorage storage)
+{
+    _deck = deck;
+    _dealer = dealer;
+    _players = players;
+    _ui = ui;
+    _storage = storage;
+}
+// Deal the starting cards according to the rules
     public void InitialDeal()
     {
         // (Players get two open cards, Dealer gets one open and one hidden hole card)
@@ -50,6 +51,15 @@ public class Round
                 {
                     // Player gets another card
                     player.AddCard(_deck.DealCard());
+
+                    // Check if you're busted
+                    if(player.Hand.IsBust())
+                    {
+                        // Display 'you're busted' message 
+                        _ui.ShowBustMessage(player);
+                        // End the player turn
+                        playerTurnActive = false;
+                    }
                 }
                 else if(choice == Move.Stand)
                 {
@@ -62,13 +72,50 @@ public class Round
 
     public void PlayDealerTurn()
     {
-        // Execute the dealer's hand based on ShouldHit()
+       while (_dealer.ShouldHit())
+        {
+            _dealer.AddCard(_deck.DealCard());
+        }
     }
 
-    public Dictionary<Player, Outcome> DetermineOutcomes()
+ public Dictionary<Player, Outcome> DetermineOutcomes()
+{
+    var results = new Dictionary<Player, Outcome>();
+
+   int dealerValue = _dealer.Hand.CalculateValue();
+
+    foreach (var player in _players)
     {
-        // Compare the players' hands vs the dealer's and update the results
-        // (Handles busts, highest hands, pushes and natural 21 wins)
-        return new Dictionary<Player, Outcome>();
+        int playerValue = player.Hand.CalculateValue();
+               
+         if (playerValue > 21)
+        {
+            results[player] = Outcome.Lose;
+        }
+        else if (playerValue < dealerValue)
+        {
+            results[player] = Outcome.Lose;
+            }
+        else if (playerValue > dealerValue)
+        {
+            results[player] = Outcome.Win;
+        }
+        else if (playerValue < dealerValue)
+        {
+            results[player] = Outcome.Lose;
+        }
+        else
+        {
+            results[player] = Outcome.Push;
+        }
     }
+
+    return results;
+}
+public void FinishRound()
+{
+    Dictionary<Player, Outcome> results = DetermineOutcomes();
+
+    _storage.Save(results);
+}
 }
