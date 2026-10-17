@@ -1,0 +1,68 @@
+Runda 1
+Spelare | Poäng | Resultat
+Tomas | 15 | Lose
+Ai | 14 | Lose
+Gentiana | 25 | Lose
+Arne | 15 | Lose
+Benjamin | 14 | Lose
+
+Runda 2
+Spelare | Poäng | Resultat
+Tomas | 13 | Lose
+Ai | 17 | Win
+Gentiana | 8 | Lose
+Arne | 12 | Lose
+Benjamin | 18 | Win
+
+Runda 3
+Spelare | Poäng | Resultat
+Tomas | 25 | Lose
+Ai | 21 | Win
+Gentiana | 24 | Lose
+Arne | 28 | Lose
+Benjamin | 20 | Push
+
+Runda 4
+Spelare | Poäng | Resultat
+Tomas | 27 | Lose
+Ai | 20 | Win
+Gentiana | 22 | Lose
+Arne | 26 | Lose
+Benjamin | 20 | Win
+
+Runda 5
+Spelare | Poäng | Resultat
+Tomas | 20 | Win
+Ai | 10 | Lose
+Gentiana | 13 | Win
+Arne | 9 | Lose
+Benjamin | 6 | Lose
+
+Runda 6
+Spelare | Poäng | Resultat
+Tomas | 19 | Win
+Ai | 16 | Lose
+Gentiana | 12 | Lose
+Arne | 13 | Lose
+Benjamin | 7 | Lose
+
+Runda 7
+Spelare | Poäng | Resultat
+Tomas | 9 | Lose
+Ai | 9 | Lose
+Gentiana | 20 | Push
+Arne | 12 | Lose
+Benjamin | 13 | Lose
+
+Runda 8
+Spelare | Poäng | Resultat
+Tomas | 19 | Push
+Ai | 20 | Win
+Gentiana | 15 | Lose
+Arne | 12 | Lose
+Benjamin | 11 | Lose
+
+Runda 9
+Spelare | Poäng | Resultat
+Gentiana | 16 | Win
+
