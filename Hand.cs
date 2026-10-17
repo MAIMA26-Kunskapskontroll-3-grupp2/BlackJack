@@ -55,11 +55,11 @@ public class Hand
     }
 
     // Check if the hand's total value is over 21
-    public bool IsBust()
-    {
-        return CalculateValue() > 21;
-    }
-
+   // Check if the hand's total value is over 21
+public bool IsBust()
+{
+    return CalculateValue() > 21;
+}
     // Check if an ace is hard or soft
     public bool IsSoft()
     {
