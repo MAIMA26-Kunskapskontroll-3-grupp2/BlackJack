@@ -110,11 +110,12 @@ public class ConsoleUi
     }
 
     public void ShowOutcome(Player player, Outcome outcome)
+{
+    if (outcome == Outcome.BlackJack)
     {
-        // Print out the final results (who won, lost or got a push)
+        Console.WriteLine($"{player.Name} fick naturlig tjugoett!");
     }
-
-    // Show a players hand.
+}
     private void ShowPlayerHand(Player player)
     {
         Console.Write($"{player.Name}: ");
