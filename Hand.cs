@@ -68,7 +68,7 @@ public bool IsBust()
 
     // Check if the player got exactly 21 points on their first two cards
     public bool IsNatural21()
-    {
-        return false; // Temporary placeholder
-    }
+{
+    return Cards.Count == 2 && CalculateValue() == 21;
+}
 }
