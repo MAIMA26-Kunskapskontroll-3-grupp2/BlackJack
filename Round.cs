@@ -55,7 +55,7 @@ public class Round
                     if(player.Hand.IsBust())
                     {
                         // Display 'you're busted' message 
-                        ui.ShowBustMessage(player);
+                        _ui.ShowBustMessage(player);
                         // End the player turn
                         playerTurnActive = false;
                     }
