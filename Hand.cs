@@ -10,14 +10,51 @@ public class Hand
         _cards.Add(card);
     }
 
+    // Calculate the sum value and handle soft/hard aces
     public int CalculateValue()
     {
-        // Calculate the sum value and handle soft/hard aces
-        // return 0 is a placeholder for a real value to be returned later 
-        return 0;
+        int score = 0;
+        int aces = 0;
+
+        foreach (Card card in _cards)
+        {
+            switch (card.Rank)
+            {
+                case Rank.Two:
+                case Rank.Three:
+                case Rank.Four:
+                case Rank.Five:
+                case Rank.Six:
+                case Rank.Seven:
+                case Rank.Eight:
+                case Rank.Nine:
+                case Rank.Ten:
+                    score += (int)card.Rank;
+                    break;
+
+                case Rank.Jack:
+                case Rank.Queen:
+                case Rank.King:
+                    score += 10;
+                    break;
+
+                case Rank.Ace:
+                    score += 11;
+                    aces++;
+                    break;
+            }
+        }
+
+        while (aces > 0 && score > 21)
+        {
+            score -= 10;
+            aces--;
+        }
+
+        return score;
     }
 
-    // Check if the hand's total value is over 21 
+    // Check if the hand's total value is over 21
     public bool IsBust()
     {
         // Test code - When busted
