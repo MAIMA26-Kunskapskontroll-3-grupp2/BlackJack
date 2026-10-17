@@ -114,6 +114,10 @@ public class ConsoleUi
         // Print out the final results (who won, lost or got a push)
     }
 
+    public void ShowBustMessage(Player player)
+    {
+        Console.WriteLine( $"\n{player.Name} du har spräckt!");
+        Console.WriteLine( $"Du fick {player.Hand.CalculateValue()} poäng och har förlorat omedelbart.");
     // Show a players hand.
     private void ShowPlayerHand(Player player)
     {
