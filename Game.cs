@@ -18,7 +18,8 @@ public class Game
                 return;
             }
         }
-
+        // Load players from _storage
+        // Start MainMenu()
         while (true)
         {
             switch (_ui.MainMenu())
@@ -40,7 +41,6 @@ public class Game
             }
         }
     }
-
     private void PlayGame()
     {
         if (_players.Count < 1)
