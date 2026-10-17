@@ -78,6 +78,12 @@ public class Round
     foreach (var player in _players)
     {
         int playerValue = player.Hand.CalculateValue();
+
+        if (player.Hand.IsNatural21())
+{
+    results[player] = Outcome.BlackJack;
+    continue;
+}
                
          if (playerValue > 21)
         {
