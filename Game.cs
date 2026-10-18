@@ -51,11 +51,11 @@ public class Game
 
         PlayRound();
     }
-       private void PlayRound()
+    private void PlayRound()
     {
         // Check the deck, create a Round object and execute the round's phases
-         Round round = new Round(_deck, _dealer, _players, _ui, _storage);
-         round.InitialDeal();
+        Round round = new Round(_deck, _dealer, _players, _ui, _storage);
+        round.InitialDeal();
         round.PlayPlayersTurns();
         round.PlayDealerTurn();
         round.DetermineOutcomes();
@@ -101,7 +101,8 @@ public class Game
         {
             _ui.ShowMessage("\nDet finns inga spelare att visa.");
             return;
-        }_ui.ShowMessage("\nSpelare:");
+        }
+        _ui.ShowMessage("\nSpelare:");
         for (int i = 0; i < _players.Count; i++)
         {
             _ui.ShowMessage($"{i + 1}. {_players[i].Name}");
