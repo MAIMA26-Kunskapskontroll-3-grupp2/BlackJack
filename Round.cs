@@ -7,17 +7,24 @@ public class Round
     private GameStorage _storage;
 
 
- public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui, GameStorage storage)
-{
-    _deck = deck;
-    _dealer = dealer;
-    _players = players;
-    _ui = ui;
-    _storage = storage;
-}
-// Deal the starting cards according to the rules
+    public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui, GameStorage storage)
+    {
+        _deck = deck;
+        _dealer = dealer;
+        _players = players;
+        _ui = ui;
+        _storage = storage;
+    }
+    // Deal the starting cards according to the rules
     public void InitialDeal()
     {
+        //Remove dealer/player(s) cards from previous round
+        _dealer.ClearHand();
+        foreach (Player player in _players)
+        {
+            player.ClearHand();
+        }
+
         // (Players get two open cards, Dealer gets one open and one hidden hole card)
         foreach (Player player in _players)
         {
@@ -28,7 +35,7 @@ public class Round
         _dealer.AddCard(_deck.DealCard());
         _dealer.AddCard(_deck.DealCard());
 
-        _ui.ShowHands(_dealer, _players, false);
+        //_ui.ShowHands(_dealer, _players, false); redundant code
     }
 
     public void PlayPlayersTurns()
@@ -53,15 +60,16 @@ public class Round
                     player.AddCard(_deck.DealCard());
 
                     // Check if you're busted
-                    if(player.Hand.IsBust())
+                    if (player.Hand.IsBust())
                     {
+                        _ui.ShowHands(_dealer, _players, false);
                         // Display 'you're busted' message 
                         _ui.ShowBustMessage(player);
                         // End the player turn
                         playerTurnActive = false;
                     }
                 }
-                else if(choice == Move.Stand)
+                else if (choice == Move.Stand)
                 {
                     // The player wants to stop - end their turn
                     playerTurnActive = false;
@@ -72,50 +80,54 @@ public class Round
 
     public void PlayDealerTurn()
     {
-       while (_dealer.ShouldHit())
+        _ui.ShowMessage("\nGivare nvänder hålkortet.");
+        while (_dealer.ShouldHit())
         {
             _dealer.AddCard(_deck.DealCard());
         }
+
+        //Show all cards, including the dealer's hoel card
+        _ui.ShowHands(_dealer, _players, true);
     }
 
- public Dictionary<Player, Outcome> DetermineOutcomes()
-{
-    var results = new Dictionary<Player, Outcome>();
-
-   int dealerValue = _dealer.Hand.CalculateValue();
-
-    foreach (var player in _players)
+    public Dictionary<Player, Outcome> DetermineOutcomes()
     {
-        int playerValue = player.Hand.CalculateValue();
-               
-         if (playerValue > 21)
+        var results = new Dictionary<Player, Outcome>();
+
+        int dealerValue = _dealer.Hand.CalculateValue();
+
+        foreach (var player in _players)
         {
-            results[player] = Outcome.Lose;
-        }
-        else if (playerValue < dealerValue)
-        {
-            results[player] = Outcome.Lose;
+            int playerValue = player.Hand.CalculateValue();
+
+            if (playerValue > 21)
+            {
+                results[player] = Outcome.Lose;
             }
-        else if (playerValue > dealerValue)
-        {
-            results[player] = Outcome.Win;
+            else if (playerValue < dealerValue)
+            {
+                results[player] = Outcome.Lose;
+            }
+            else if (playerValue > dealerValue)
+            {
+                results[player] = Outcome.Win;
+            }
+            else if (playerValue < dealerValue)
+            {
+                results[player] = Outcome.Lose;
+            }
+            else
+            {
+                results[player] = Outcome.Push;
+            }
         }
-        else if (playerValue < dealerValue)
-        {
-            results[player] = Outcome.Lose;
-        }
-        else
-        {
-            results[player] = Outcome.Push;
-        }
+
+        return results;
     }
+    public void FinishRound()
+    {
+        Dictionary<Player, Outcome> results = DetermineOutcomes();
 
-    return results;
-}
-public void FinishRound()
-{
-    Dictionary<Player, Outcome> results = DetermineOutcomes();
-
-    _storage.Save(results);
-}
+        _storage.Save(results);
+    }
 }

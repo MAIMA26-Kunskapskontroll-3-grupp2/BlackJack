@@ -66,3 +66,11 @@ Runda 9
 Spelare | Poäng | Resultat
 Gentiana | 16 | Win
 
+Runda 10
+Spelare | Poäng | Resultat
+Laban | 16 | Win
+
+Runda 11
+Spelare | Poäng | Resultat
+Laban | 18 | Push
+

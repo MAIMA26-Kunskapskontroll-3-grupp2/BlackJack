@@ -10,6 +10,10 @@ public class Hand
         _cards.Add(card);
     }
 
+    public void Clear()
+    {
+        _cards.Clear();
+    }
     // Calculate the sum value and handle soft/hard aces
     public int CalculateValue()
     {
@@ -55,11 +59,11 @@ public class Hand
     }
 
     // Check if the hand's total value is over 21
-   // Check if the hand's total value is over 21
-public bool IsBust()
-{
-    return CalculateValue() > 21;
-}
+    // Check if the hand's total value is over 21
+    public bool IsBust()
+    {
+        return CalculateValue() > 21;
+    }
     // Check if an ace is hard or soft
     public bool IsSoft()
     {
