@@ -131,8 +131,8 @@ public class Round
         }
         return results;
     }
-    
-    private Outcome GetOutcome (Player player)
+
+    private Outcome GetOutcome(Player player)
     {
         Hand playerHand = player.Hand;
         Hand dealerHand = _dealer.Hand;
@@ -185,7 +185,15 @@ public class Round
     public void FinishRound()
     {
         Dictionary<Player, Outcome> results = DetermineOutcomes();
-
+        
+        _ui.ShowMessage("\nResultat:");
+        foreach (Player player in _players)
+        {
+            Outcome outcome = results[player];
+            player.AddResult(outcome);
+            _ui.ShowOutcome(player, outcome);
+        }
+        //Need to be tested with try-catch
         _storage.Save(results);
     }
 }

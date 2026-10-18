@@ -58,7 +58,7 @@ public class Game
         round.InitialDeal();
         round.PlayPlayersTurns();
         round.PlayDealerTurn();
-        round.DetermineOutcomes();
+        //round.DetermineOutcomes();
         round.FinishRound();
     }
 
