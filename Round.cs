@@ -88,6 +88,11 @@ public class Round
 
         //Show all cards, including the dealer's hoel card
         _ui.ShowHands(_dealer, _players, true);
+
+        if (_dealer.Hand.IsBust())
+        {
+            _ui.ShowMessage("Givaren har spruckit!");
+        }
     }
 
     public Dictionary<Player, Outcome> DetermineOutcomes()
