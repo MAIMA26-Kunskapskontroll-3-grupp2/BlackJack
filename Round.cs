@@ -99,13 +99,14 @@ public class Round
     {
         var results = new Dictionary<Player, Outcome>();
 
-        int dealerValue = _dealer.Hand.CalculateValue();
+        //int dealerValue = _dealer.Hand.CalculateValue();
 
         foreach (var player in _players)
         {
-            int playerValue = player.Hand.CalculateValue();
+            //int playerValue = player.Hand.CalculateValue();
+            results[player] = GetOutcome(player);
 
-            if (player.Hand.IsNatural21())
+            /*if (player.Hand.IsNatural21())
             {
                 results[player] = Outcome.BlackJack;
                 continue;
@@ -126,10 +127,60 @@ public class Round
             else
             {
                 results[player] = Outcome.Push;
-            }
+            }*/
+        }
+        return results;
+    }
+    
+    private Outcome GetOutcome (Player player)
+    {
+        Hand playerHand = player.Hand;
+        Hand dealerHand = _dealer.Hand;
+
+        //A player that has busted always lose, even if the dealer also has busted
+        if (playerHand.IsBust())
+        {
+            return Outcome.Lose;
         }
 
-        return results;
+        //natural for dealer/player is a draw (push)
+        if (playerHand.IsNatural21() && dealerHand.IsNatural21())
+        {
+            return Outcome.Push;
+        }
+
+        //natural 21 (only two cards), beats all hands (with more than 2 cards)
+        if (playerHand.IsNatural21())
+        {
+            return Outcome.BlackJack;
+        }
+
+        if (dealerHand.IsNatural21())
+        {
+            return Outcome.Lose;
+        }
+
+        if (dealerHand.IsBust())
+        {
+            return Outcome.Lose;
+        }
+
+        //none has busted, highest hand wins
+        int playerValue = playerHand.CalculateValue();
+        int dealerValue = dealerHand.CalculateValue();
+
+        if (playerValue > dealerValue)
+        {
+            return Outcome.Win;
+        }
+        else if (playerValue < dealerValue)
+        {
+            return Outcome.Lose;
+        }
+        else
+        {
+            return Outcome.Push;
+        }
     }
     public void FinishRound()
     {
