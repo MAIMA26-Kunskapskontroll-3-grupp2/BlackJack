@@ -65,6 +65,12 @@ Benjamin | 11 | Lose
 Runda 9
 Spelare | Poäng | Resultat
 Gentiana | 16 | Win
+Runda 10
+Spelare | Poäng | Resultat
+
+Runda 11
+Spelare | Poäng | Resultat
+Gentiana | 21 | BlackJack
 
 Runda 10
 Spelare | Poäng | Resultat

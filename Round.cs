@@ -100,6 +100,12 @@ public class Round
         {
             int playerValue = player.Hand.CalculateValue();
 
+            if (player.Hand.IsNatural21())
+            {
+                results[player] = Outcome.BlackJack;
+                continue;
+            }
+
             if (playerValue > 21)
             {
                 results[player] = Outcome.Lose;
@@ -111,10 +117,6 @@ public class Round
             else if (playerValue > dealerValue)
             {
                 results[player] = Outcome.Win;
-            }
-            else if (playerValue < dealerValue)
-            {
-                results[player] = Outcome.Lose;
             }
             else
             {
