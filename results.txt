@@ -72,3 +72,11 @@ Runda 11
 Spelare | Poäng | Resultat
 Gentiana | 21 | BlackJack
 
+Runda 10
+Spelare | Poäng | Resultat
+Laban | 16 | Win
+
+Runda 11
+Spelare | Poäng | Resultat
+Laban | 18 | Push
+

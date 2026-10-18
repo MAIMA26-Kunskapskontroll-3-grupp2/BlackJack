@@ -12,4 +12,8 @@ public abstract class Participant
     {
         Hand.AddCard(card);
     }
+    public void ClearHand()
+    {
+        Hand.Clear();
+    }
 }
