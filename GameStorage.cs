@@ -8,6 +8,26 @@ public class GameStorage
 
     // TEMPORARY TEST: Verify that player results are saved between rounds.
     // Remove after code review.
+    public void SavePlayers(List<Player> players)
+    {
+        File.WriteAllLines("players.txt",
+            players.ConvertAll(player => player.Name));
+    }
+
+    public List<Player> LoadPlayers()
+    {
+        List<Player> players = new();
+
+        if (File.Exists("players.txt"))
+        {
+            foreach (string name in File.ReadAllLines("players.txt"))
+            {
+                players.Add(new Player(name));
+            }
+        }
+
+        return players;
+    }
     public GameStorage(string path = "results.txt")
     {
         this.path = path;
@@ -82,11 +102,6 @@ public class GameStorage
         string outcomeText = parts[2].Trim();
 
         bool validName = !string.IsNullOrWhiteSpace(name);
-        /*bool validName = name == "Tomas"
-                      || name == "Ai"
-                      || name == "Gentiana"
-                      || name == "Arne"3
-                      || name == "Benjamin";*/
 
         bool validPoints = int.TryParse(pointsText, out int points)
                            && points >= 0;
