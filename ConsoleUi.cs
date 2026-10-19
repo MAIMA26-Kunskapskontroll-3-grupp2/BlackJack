@@ -90,9 +90,9 @@ public class ConsoleUi
         {
             Console.Write($"\n{player.Name} tryck på 'K' för att köpa eller 'S' för att stanna: ");
             string? input = Console.ReadLine();
-            if (input != null)
+            if (!string.IsNullOrWhiteSpace(input))
             {
-                input = input.ToUpper();
+                input = input.ToUpper().Trim();
                 switch (input)
                 {
                     case "K": return Move.Hit;
