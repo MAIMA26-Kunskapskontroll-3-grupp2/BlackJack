@@ -6,8 +6,6 @@ public class GameStorage
 {
     private string path;
 
-    // TEMPORARY TEST: Verify that player results are saved between rounds.
-    // Remove after code review.
     public void SavePlayers(List<Player> players)
     {
         File.WriteAllLines("players.txt",
@@ -28,10 +26,12 @@ public class GameStorage
 
         return players;
     }
+
     public GameStorage(string path = "results.txt")
     {
         this.path = path;
     }
+
     public void Save(Dictionary<Player, Outcome> results)
     {
         string[] existingLines = Load();
