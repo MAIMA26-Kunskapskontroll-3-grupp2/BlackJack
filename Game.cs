@@ -5,6 +5,7 @@ public class Game
     private Deck _deck = new Deck();
     private GameStorage _storage = new GameStorage();
     private ConsoleUi _ui = new ConsoleUi();
+
     public void Run()
     {
         // Läs in tidigare sparade resultat.
@@ -18,6 +19,7 @@ public class Game
                 return;
             }
         }
+
         // Load players from _storage
         // Start MainMenu()
         while (true)
@@ -41,21 +43,53 @@ public class Game
             }
         }
     }
+
     private void PlayGame()
     {
         if (_players.Count < 1)
         {
-            _ui.ShowMessage("\nDet finns inga spelare. Var vänlig och lägg till minst en spelare.");
+            _ui.ShowMessage("Det finns inga spelare. Var vänlig och lägg till minst en spelare.");
             return;
         }
 
-        PlayRound();
+        bool keepPlaying = true;
+
+        while (keepPlaying)
+        {
+            PlayRound();
+
+            while (true)
+            {
+                string? answer = _ui.GetString("Vill ni spela en till runda (Ja/Nej): ");
+                if (answer == null)
+                    continue;
+
+                char c = answer.ToUpper()[0];
+                if (c == 'N')
+                {
+                    keepPlaying = false;
+                    break;
+                }
+
+                if (c == 'J')
+                    break;
+
+                _ui.ShowMessage("Ogiltigt svar. Svara Ja eller Nej.");
+            }
+        }
     }
-       private void PlayRound()
+
+    private void PlayRound()
     {
         // Check the deck, create a Round object and execute the round's phases
-         Round round = new Round(_deck, _dealer, _players, _ui, _storage);
-         round.InitialDeal();
+        if (_deck.CardsLeft() <= 15)
+        {
+            _ui.ShowMessage($"Det finns bara {_deck.CardsLeft()} kort kvar i leken. Blandar kortleken.");
+            _deck = new();
+        }
+
+        Round round = new Round(_deck, _dealer, _players, _ui, _storage);
+        round.InitialDeal();
         round.PlayPlayersTurns();
         round.PlayDealerTurn();
         round.DetermineOutcomes();
@@ -66,13 +100,15 @@ public class Game
     {
         if (_players.Count >= 5)
         {
-            _ui.ShowMessage("\nSpelet är fullt. Det finns redan 5 spelare.");
+            _ui.ShowMessage("Spelet är fullt. Det finns redan 5 spelare.");
             return;
         }
 
         string? name = _ui.GetString($"Ange spelarens namn: ");
         if (name != null)
             _players.Add(new(name));
+
+        _ui.ShowMessage("");
 
         ShowPlayers();
     }
@@ -81,7 +117,7 @@ public class Game
     {
         if (_players.Count <= 0)
         {
-            _ui.ShowMessage("\nDet finns inga spelare att ta bort.");
+            _ui.ShowMessage("Det finns inga spelare att ta bort.");
             return;
         }
 
@@ -99,9 +135,10 @@ public class Game
     {
         if (_players.Count <= 0)
         {
-            _ui.ShowMessage("\nDet finns inga spelare att visa.");
+            _ui.ShowMessage("Det finns inga spelare att visa.");
             return;
-        }_ui.ShowMessage("\nSpelare:");
+        }
+        _ui.ShowMessage("Spelare:");
         for (int i = 0; i < _players.Count; i++)
         {
             _ui.ShowMessage($"{i + 1}. {_players[i].Name}");
