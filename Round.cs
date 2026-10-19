@@ -63,7 +63,7 @@ public class Round
                     if (player.Hand.IsBust())
                     {
                         _ui.ShowHands(_dealer, _players, false);
-                        // Display 'you're busted' message 
+                        // Display 'you're busted' message
                         _ui.ShowBustMessage(player);
                         // End the player turn
                         playerTurnActive = false;
@@ -99,13 +99,14 @@ public class Round
     {
         var results = new Dictionary<Player, Outcome>();
 
-        int dealerValue = _dealer.Hand.CalculateValue();
+        //int dealerValue = _dealer.Hand.CalculateValue();
 
         foreach (var player in _players)
         {
-            int playerValue = player.Hand.CalculateValue();
+            //int playerValue = player.Hand.CalculateValue();
+            results[player] = GetOutcome(player);
 
-            if (player.Hand.IsNatural21())
+            /*if (player.Hand.IsNatural21())
             {
                 results[player] = Outcome.BlackJack;
                 continue;
@@ -126,15 +127,73 @@ public class Round
             else
             {
                 results[player] = Outcome.Push;
-            }
+            }*/
+        }
+        return results;
+    }
+
+    private Outcome GetOutcome(Player player)
+    {
+        Hand playerHand = player.Hand;
+        Hand dealerHand = _dealer.Hand;
+
+        //A player that has busted always lose, even if the dealer also has busted
+        if (playerHand.IsBust())
+        {
+            return Outcome.Lose;
         }
 
-        return results;
+        //natural for dealer/player is a draw (push)
+        if (playerHand.IsNatural21() && dealerHand.IsNatural21())
+        {
+            return Outcome.Push;
+        }
+
+        //natural 21 (only two cards), beats all hands (with more than 2 cards)
+        if (playerHand.IsNatural21())
+        {
+            return Outcome.BlackJack;
+        }
+
+        if (dealerHand.IsNatural21())
+        {
+            return Outcome.Lose;
+        }
+
+        if (dealerHand.IsBust())
+        {
+            return Outcome.Win;
+        }
+
+        //none has busted, highest hand wins
+        int playerValue = playerHand.CalculateValue();
+        int dealerValue = dealerHand.CalculateValue();
+
+        if (playerValue > dealerValue)
+        {
+            return Outcome.Win;
+        }
+        else if (playerValue < dealerValue)
+        {
+            return Outcome.Lose;
+        }
+        else
+        {
+            return Outcome.Push;
+        }
     }
     public void FinishRound()
     {
         Dictionary<Player, Outcome> results = DetermineOutcomes();
 
+        _ui.ShowMessage("\nResultat:");
+        foreach (Player player in _players)
+        {
+            Outcome outcome = results[player];
+            player.AddResult(outcome);
+            _ui.ShowOutcome(player, outcome);
+        }
+        //Need to be tested with try-catch
         _storage.Save(results);
     }
 }

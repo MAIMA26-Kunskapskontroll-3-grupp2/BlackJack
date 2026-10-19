@@ -105,12 +105,29 @@ public class ConsoleUi
 
     public void ShowOutcome(Player player, Outcome outcome)
     {
-        if (outcome == Outcome.BlackJack)
+        /*if (outcome == Outcome.BlackJack)
         {
             Console.WriteLine($"{player.Name} fick naturlig tjugoett!");
+        }*/
+        string text = "";
+        switch (outcome)
+        {
+            case Outcome.Win:
+                text = "Vinst";
+                break;
+            case Outcome.BlackJack:
+                text = "Vinst med naturlig tjugoett!";
+                break;
+            case Outcome.Lose:
+                text = "Förlust";
+                break;
+            case Outcome.Push:
+                text = "Lika";
+                break;
         }
-    }
-    public void ShowBustMessage(Player player)
+        Console.WriteLine($"{player.Name} ({player.Hand.CalculateValue()} poäng): {text}");
+}
+public void ShowBustMessage(Player player)
     {
         Console.WriteLine($"\n{player.Name} du har spräckt!");
         Console.WriteLine($"Du fick {player.Hand.CalculateValue()} poäng och har förlorat omedelbart.");
