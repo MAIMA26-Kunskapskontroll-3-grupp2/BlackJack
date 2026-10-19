@@ -81,3 +81,43 @@ Runda 13
 Spelare | Poäng | Resultat
 MR-T | 18 | Win
 
+Runda 14
+Spelare | Poäng | Resultat
+Tomas | 21 | Win
+Gentiana | 17 | Push
+Arne | 18 | Win
+
+Runda 15
+Spelare | Poäng | Resultat
+Tomas | 18 | Win
+Gentiana | 18 | Win
+Arne | 21 | Win
+
+Runda 16
+Spelare | Poäng | Resultat
+Tomas | 20 | Win
+Gentiana | 19 | Win
+Arne | 17 | Lose
+
+Runda 17
+Spelare | Poäng | Resultat
+Tomas | 19 | Lose
+Gentiana | 19 | Lose
+Arne | 20 | Lose
+
+Runda 18
+Spelare | Poäng | Resultat
+Tomas | 22 | Lose
+
+Runda 19
+Spelare | Poäng | Resultat
+Tomas | 19 | Push
+
+Runda 20
+Spelare | Poäng | Resultat
+Tomas | 22 | Lose
+
+Runda 21
+Spelare | Poäng | Resultat
+Tomas | 15 | Win
+

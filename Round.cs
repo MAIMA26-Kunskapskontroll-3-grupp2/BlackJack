@@ -63,7 +63,7 @@ public class Round
                     if (player.Hand.IsBust())
                     {
                         _ui.ShowHands(_dealer, _players, false);
-                        // Display 'you're busted' message 
+                        // Display 'you're busted' message
                         _ui.ShowBustMessage(player);
                         // End the player turn
                         playerTurnActive = false;
@@ -162,7 +162,7 @@ public class Round
 
         if (dealerHand.IsBust())
         {
-            return Outcome.Lose;
+            return Outcome.Win;
         }
 
         //none has busted, highest hand wins
@@ -185,7 +185,7 @@ public class Round
     public void FinishRound()
     {
         Dictionary<Player, Outcome> results = DetermineOutcomes();
-        
+
         _ui.ShowMessage("\nResultat:");
         foreach (Player player in _players)
         {

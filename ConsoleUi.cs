@@ -128,7 +128,7 @@ public class ConsoleUi
                 text = "Förlust";
                 break;
             case Outcome.Push:
-                text = "L ika";
+                text = "Lika";
                 break;
         }
         Console.WriteLine($"{player.Name} ({player.Hand.CalculateValue()} poäng): {text}");
