@@ -126,8 +126,8 @@ public class ConsoleUi
                 break;
         }
         Console.WriteLine($"{player.Name} ({player.Hand.CalculateValue()} poäng): {text}");
-}
-public void ShowBustMessage(Player player)
+    }
+    public void ShowBustMessage(Player player)
     {
         Console.WriteLine($"\n{player.Name} du har spräckt!");
         Console.WriteLine($"Du fick {player.Hand.CalculateValue()} poäng och har förlorat omedelbart.");

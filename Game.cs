@@ -10,7 +10,7 @@ public class Game
     {
         // Läs in tidigare sparade resultat.
         string[] savedResults = _storage.Load();
-        
+
 
         foreach (string line in savedResults)
         {
@@ -20,7 +20,7 @@ public class Game
                 return;
             }
         }
-       _players = _storage.LoadPlayers();
+        _players = _storage.LoadPlayers();
         // Start MainMenu()
         while (true)
         {
@@ -104,13 +104,13 @@ public class Game
             return;
         }
 
-string? name = _ui.GetString($"Ange spelarens namn: ");
+        string? name = _ui.GetString($"Ange spelarens namn: ");
 
-if (name != null)
-{
-    _players.Add(new(name));
-    _storage.SavePlayers(_players);
-}
+        if (name != null)
+        {
+            _players.Add(new(name));
+            _storage.SavePlayers(_players);
+        }
 
 
         _ui.ShowMessage("");
