@@ -112,9 +112,6 @@ public class Game
             _storage.SavePlayers(_players);
         }
 
-
-        _ui.ShowMessage("");
-
         _ui.ShowMessage("");
 
         ShowPlayers();
