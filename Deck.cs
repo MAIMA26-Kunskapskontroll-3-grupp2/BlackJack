@@ -16,13 +16,22 @@ public class Deck
             }
         }
 
-        // "This method involves some unsafe code and should be used
-        // cautiously. The CollectionsMarshal approach relies on the
-        // internal implementation of List<T>, which might change in
-        // future versions of .NET."
-        // Reference: https://okyrylchuk.dev/blog/efficient-memory-management-with-spans-in-dotnet/
-        // But we don't have to care about that, because this is a 2 week school project. :)
-        _random.Shuffle<Card>(CollectionsMarshal.AsSpan(_cards));
+        Shuffle();
+    }
+
+    private void Shuffle()
+    {
+        for (int i = _cards.Count - 1; i > 0; i--)
+        {
+            int r = _random.Next(i + 1);
+
+            if (r == i)
+                continue;
+
+            Card card = _cards[i];
+            _cards[i] = _cards[r];
+            _cards[r] = card;
+        }
     }
 
     // Throws DeckIsEmptyException
