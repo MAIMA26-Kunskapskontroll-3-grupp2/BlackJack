@@ -62,14 +62,8 @@ public class ConsoleUi
         Console.Write(message);
 
         string? input = Console.ReadLine();
-        if (input != null)
-        {
-            input = input.Trim();
-            if (input.Length == 0)
-                input = null;
-        }
 
-        return input;
+        return string.IsNullOrWhiteSpace(input) ? null : input.Trim();
     }
 
     // Show a message.
@@ -94,7 +88,7 @@ public class ConsoleUi
     {
         while (true)
         {
-            Console.WriteLine($"\n{player.Name} tryck på 'K' för att köpa eller 'S' för att stanna");
+            Console.Write($"\n{player.Name} tryck på 'K' för att köpa eller 'S' för att stanna: ");
             string? input = Console.ReadLine();
             if (input != null)
             {
@@ -110,17 +104,18 @@ public class ConsoleUi
     }
 
     public void ShowOutcome(Player player, Outcome outcome)
-{
-    if (outcome == Outcome.BlackJack)
     {
-        Console.WriteLine($"{player.Name} fick naturlig tjugoett!");
+        if (outcome == Outcome.BlackJack)
+        {
+            Console.WriteLine($"{player.Name} fick naturlig tjugoett!");
+        }
     }
-}
-public void ShowBustMessage(Player player)
+    public void ShowBustMessage(Player player)
     {
-        Console.WriteLine( $"\n{player.Name} du har spräckt!");
-        Console.WriteLine( $"Du fick {player.Hand.CalculateValue()} poäng och har förlorat omedelbart.");
+        Console.WriteLine($"\n{player.Name} du har spräckt!");
+        Console.WriteLine($"Du fick {player.Hand.CalculateValue()} poäng och har förlorat omedelbart.");
     }
+
     // Show a players hand.
     private void ShowPlayerHand(Player player)
     {
