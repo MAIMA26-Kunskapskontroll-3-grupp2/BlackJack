@@ -1,5 +1,6 @@
 ```mermaid
 classDiagram
+    direction LR
     %% Datatyper och Enums (PascalCase)
     class Suit{
         <<enumeration>>

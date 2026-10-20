@@ -4,7 +4,7 @@ public class Dealer : Participant
     // type a name manually whenever we create a new Dealer
     public Dealer() : base("Givaren") { }
 
-    public Card UpCard()
+    public Card? UpCard()
     {
         // Check if the dealer has any cards on hand, and return the first card
         // (the visible upcard) if it exists, otherwise return null
@@ -18,7 +18,7 @@ public class Dealer : Participant
         }
     }
 
-    public Card HoleCard()
+    public Card? HoleCard()
     {
         // Check if the dealer has at least 2 cards on hand and return the second card
         // (the hidden hole card), otherwise return null 
@@ -37,6 +37,6 @@ public class Dealer : Participant
     // (if below 17, return true)
     public bool ShouldHit()
     {
-        return false; // Temporary placeholder
+        return Hand.CalculateValue() < 17;
     }
 }

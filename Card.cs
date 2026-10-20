@@ -1,11 +1,10 @@
 public class Card
 {
-    public string Rank { get; }
-    public string SuitSymbol { get; }
-
-    public Card(string rank, string suitSymbol)
+    public Suit Suit { get; }
+    public Rank Rank { get; }
+    public Card(Suit suit, Rank rank)
     {
+        Suit = suit;
         Rank = rank;
-        SuitSymbol = suitSymbol;
     }
 }
