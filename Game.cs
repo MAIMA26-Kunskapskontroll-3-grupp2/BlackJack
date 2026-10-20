@@ -108,7 +108,6 @@ public class Game
         if (name != null)
         {
             _players.Add(new(name));
-            _storage.SavePlayers(_players);
         }
         else
         {
@@ -134,9 +133,10 @@ public class Game
         if (index == _players.Count)
             return;
 
+
         _players.RemoveAt(index);
-        _storage.SavePlayers(_players);
         ShowPlayers();
+
     }
 
     private void ShowPlayers()
