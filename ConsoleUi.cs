@@ -1,6 +1,3 @@
-using System.Diagnostics.Contracts;
-using System.Dynamic;
-
 public class ConsoleUi
 {
     // Show the main menu and get a reply.
