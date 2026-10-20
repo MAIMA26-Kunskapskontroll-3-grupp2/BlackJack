@@ -153,7 +153,60 @@ public class ConsoleUi
             Console.WriteLine($"poäng: {dealer.Hand.CalculateValue()}");
         }
     }
+    // Visar korten bredvid varandra.
+    private void ShowCards(List<Card> cards, bool hideSecondCard = false)
+    {
+        if (cards.Count == 0)
+        {
+            return;
+        }
 
+        List<string[]> cardRows = new();
+
+        for (int i = 0; i < cards.Count; i++)
+        {
+            if (hideSecondCard && i == 1)
+            {
+                cardRows.Add(new string[]
+                {
+                    "┌───────┐",
+                    "│▒▒▒▒▒▒▒│",
+                    "│▒▒▒▒▒▒▒│",
+                    "│▒▒▒▒▒▒▒│",
+                    "└───────┘"
+                });
+            }
+            else
+            {
+                cardRows.Add(_cardRenderer.RenderCard(cards[i]));
+            }
+        }
+
+        for (int row = 0; row < cardRows[0].Length; row++)
+        {
+            for (int i = 0; i < cards.Count; i++)
+            {
+                if (hideSecondCard && i == 1)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                }
+                else if (cards[i].Suit == Suit.Hearts ||
+                         cards[i].Suit == Suit.Diamonds)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
+                Console.Write(cardRows[i][row] + " ");
+                Console.ResetColor();
+            }
+
+            Console.WriteLine();
+        }
+    }
     // Gets the symbol to print for the rank.
     private string GetRankSymbol(Rank rank)
     {
