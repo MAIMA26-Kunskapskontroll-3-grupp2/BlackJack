@@ -72,6 +72,14 @@ public class ConsoleUi
         Console.WriteLine(message);
     }
 
+    // Show an error message
+    public void ShowErrorMessage(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+    
     // Show the current cards of the players and the dealer
     public void ShowHands(Dealer dealer, List<Player> players, bool revealDealer)
     {
