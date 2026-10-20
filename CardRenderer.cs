@@ -2,23 +2,37 @@ public class CardRenderer
 {
     public string[] RenderCard(Card card)
     {
-        string top = "┌───────┐";
-        string rankTop = $"│{card.Rank,-2}     │";
-        string suitMiddle = $"│   {GetSuitSymbol(card.Suit)}   │";
-        string rankBottom = $"│     {card.Rank,-2}│";
-        string bottom = "└───────┘";
+        string rank = GetRankSymbol(card.Rank);
+        string suit = GetSuitSymbol(card.Suit);
 
-        return new string[] { top, rankTop, suitMiddle, rankBottom, bottom };
-    }
-    private string GetSuitSymbol(Suit suit)
-    {
-        return suit switch
+        return new string[]
         {
-            Suit.Hearts => "♥",
-            Suit.Diamonds => "♦",
-            Suit.Clubs => "♣",
-            Suit.Spades => "♠",
-            _ => "?"
+            "┌───────┐",
+            $"│{rank,-2}     │",
+            $"│   {suit}   │",
+            $"│     {rank,2}│",
+            "└───────┘"
         };
     }
-}
+
+    private string GetRankSymbol(Rank rank)
+    {
+        if (rank <= Rank.Ten)
+        {
+            return ((int)rank).ToString();
+        }
+
+        switch (rank)
+        {
+            case Rank.Jack:
+                return "J";
+            case Rank.Queen:
+                return "Q";
+            case Rank.King:
+                return "K";
+            case Rank.Ace:
+                return "A";
+            default:
+                return "?";
+        }
+    }
