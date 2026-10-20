@@ -1,6 +1,3 @@
-using System.Diagnostics.Contracts;
-using System.Dynamic;
-
 public class ConsoleUi
 {
     private readonly CardRenderer _cardRenderer = new();
@@ -9,7 +6,7 @@ public class ConsoleUi
     {
         while (true)
         {
-            Console.WriteLine();
+            // Console.WriteLine();
             Console.WriteLine("1. Lägg till spelare");
             Console.WriteLine("2. Ta bort spelare");
             Console.WriteLine("3. Visa spelare");
@@ -22,39 +19,53 @@ public class ConsoleUi
             {
                 if (int.TryParse(input, out int i))
                 {
-                    if (i is 1 or 2 or 3 or 4 or 5)
+                    if (1 <= i && i <= 5)
+                    {
+                        Console.WriteLine();
                         return i;
+                    }
                 }
             }
+            Console.WriteLine();
             Console.WriteLine("Ogiltigt val.");
+            Console.WriteLine();
         }
     }
 
     // Show the remove player menu and get a reply.
     public int RemovePlayerMenu(string[] playerNames)
     {
-        while (true)
+        for (int i = 0; i < playerNames.Length; i++)
         {
-            Console.WriteLine();
-            for (int i = 0; i < playerNames.Length; i++)
-            {
-                Console.WriteLine($"{i + 1}. {playerNames[i]}");
-            }
-            Console.WriteLine($"{playerNames.Length + 1}. Tillbaka till huvudmenyn");
-            Console.Write("Vilken spelare vill du ta bort: ");
-
-            string? input = Console.ReadLine();
-            if (input != null)
-            {
-                if (int.TryParse(input, out int i))
-                {
-                    i--;
-                    if (i >= 0 && i <= playerNames.Length)
-                        return i;
-                }
-            }
-            Console.WriteLine("Ogiltigt val.");
+            Console.WriteLine($"{i + 1}. {playerNames[i]}");
         }
+        Console.WriteLine($"{playerNames.Length + 1}. Tillbaka till huvudmenyn");
+        Console.Write("Vilken spelare vill du ta bort: ");
+
+        string? input = Console.ReadLine();
+        Console.WriteLine();
+        if (input != null)
+        {
+            if (int.TryParse(input, out int i))
+            {
+                i--;
+                if (i >= 0 && i <= playerNames.Length)
+                    return i;
+            }
+        }
+        Console.WriteLine("Ogiltigt val.");
+        Console.WriteLine();
+        return -1;
+    }
+
+    public void ShowList(string title, string[] lines)
+    {
+        Console.WriteLine(title);
+        foreach (string line in lines)
+        {
+            Console.WriteLine(line);
+        }
+        Console.WriteLine();
     }
 
     // Show a message and get a reply to it.
@@ -63,14 +74,23 @@ public class ConsoleUi
         Console.Write(message);
 
         string? input = Console.ReadLine();
+        Console.WriteLine();
 
         return string.IsNullOrWhiteSpace(input) ? null : input.Trim();
     }
 
     // Show a message.
-    public void ShowMessage(string message)
+    public void ShowMessage(string message, bool extraNewLine = true)
     {
         Console.WriteLine(message);
+
+        if (extraNewLine)
+            Console.WriteLine();
+    }
+
+    public void NewLine()
+    {
+        Console.WriteLine();
     }
 
     // Show the current cards of the players and the dealer
@@ -82,6 +102,7 @@ public class ConsoleUi
         }
 
         ShowDealerHand(dealer, revealDealer);
+        Console.WriteLine();
     }
 
     // Ask the player if they want to hit or stand
@@ -89,27 +110,26 @@ public class ConsoleUi
     {
         while (true)
         {
-            Console.Write($"\n{player.Name} tryck på 'K' för att köpa eller 'S' för att stanna: ");
+            Console.Write($"{player.Name} tryck på 'K' för att köpa eller 'S' för att stanna: ");
             string? input = Console.ReadLine();
-            if (input != null)
+            Console.WriteLine();
+
+            if (!string.IsNullOrWhiteSpace(input))
             {
-                input = input.ToUpper();
+                input = input.ToUpper().Trim();
                 switch (input)
                 {
                     case "K": return Move.Hit;
                     case "S": return Move.Stand;
                 }
             }
-            Console.WriteLine("\nDet alternativet existerar inte.");
+            Console.WriteLine("Det alternativet existerar inte.");
+            Console.WriteLine();
         }
     }
 
     public void ShowOutcome(Player player, Outcome outcome)
     {
-        /*if (outcome == Outcome.BlackJack)
-        {
-            Console.WriteLine($"{player.Name} fick naturlig tjugoett!");
-        }*/
         string text = "";
         switch (outcome)
         {
@@ -128,10 +148,13 @@ public class ConsoleUi
         }
         Console.WriteLine($"{player.Name} ({player.Hand.CalculateValue()} poäng): {text}");
     }
+
     public void ShowBustMessage(Player player)
     {
-        Console.WriteLine($"\n{player.Name} du har spräckt!");
+        Console.WriteLine();
+        Console.WriteLine($"{player.Name} du har spräckt!");
         Console.WriteLine($"Du fick {player.Hand.CalculateValue()} poäng och har förlorat omedelbart.");
+        Console.WriteLine();
     }
 
     // Show a players hand.
