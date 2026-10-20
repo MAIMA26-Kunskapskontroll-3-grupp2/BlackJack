@@ -4,7 +4,7 @@ using System.Dynamic;
 public class ConsoleUi
 {
     private readonly CardRenderer _cardRenderer = new();
-
+    // Show the main menu and get a reply.
     public int MainMenu()
     {
         while (true)
@@ -136,14 +136,11 @@ public class ConsoleUi
 
     // Show a players hand.
     private void ShowPlayerHand(Player player)
-    {
-        Console.Write($"{player.Name}: ");
-        foreach (Card card in player.Hand.Cards)
-        {
-            ShowCard(card);
-        }
-        Console.WriteLine($"poäng: {player.Hand.CalculateValue()}");
-    }
+{
+    Console.WriteLine($"{player.Name}:");
+    ShowCards(player.Hand.Cards);
+    Console.WriteLine($"poäng: {player.Hand.CalculateValue()}");
+}
 
     // Show the dealers hand.
     private void ShowDealerHand(Dealer dealer, bool revealDealer)
@@ -193,12 +190,12 @@ public class ConsoleUi
     // Prints the symbol for the suit in appropriate color.
     private void ShowCard(Card card)
     {
-        string[] lines = _cardRenderer.RenderCard(card);
+        Console.ForegroundColor = card.Suit is Suit.Diamonds or Suit.Hearts
+        ? ConsoleColor.Red : ConsoleColor.White;
 
-        foreach (string line in lines)
-        {
-            Console.WriteLine(line);
-        }
+        Console.Write(GetSuitSymbol(card.Suit));
+        Console.Write($"{GetRankSymbol(card.Rank)} ");
+        Console.ResetColor();
     }
 
     // Prints the backside of the dealers hidden card.
