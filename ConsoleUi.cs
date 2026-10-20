@@ -2,8 +2,8 @@ using System.Diagnostics.Contracts;
 using System.Dynamic;
 
 public class ConsoleUi
-{
-    // Show the main menu and get a reply.
+{private readonly CardRenderer _cardRenderer = new();
+    
     public int MainMenu()
     {
         while (true)

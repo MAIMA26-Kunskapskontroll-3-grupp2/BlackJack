@@ -36,3 +36,20 @@ public class CardRenderer
                 return "?";
         }
     }
+    private string GetSuitSymbol(Suit suit)
+    {
+        switch (suit)
+        {
+            case Suit.Hearts:
+                return "♥";
+            case Suit.Diamonds:
+                return "♦";
+            case Suit.Clubs:
+                return "♣";
+            case Suit.Spades:
+                return "♠";
+            default:
+                return "?";
+        }
+    }
+}
