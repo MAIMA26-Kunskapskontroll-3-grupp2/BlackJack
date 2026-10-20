@@ -2,8 +2,9 @@ using System.Diagnostics.Contracts;
 using System.Dynamic;
 
 public class ConsoleUi
-{private readonly CardRenderer _cardRenderer = new();
-    
+{
+    private readonly CardRenderer _cardRenderer = new();
+
     public int MainMenu()
     {
         while (true)
@@ -192,12 +193,12 @@ public class ConsoleUi
     // Prints the symbol for the suit in appropriate color.
     private void ShowCard(Card card)
     {
-        Console.ForegroundColor = card.Suit is Suit.Diamonds or Suit.Hearts
-        ? ConsoleColor.Red : ConsoleColor.White;
+        string[] lines = _cardRenderer.RenderCard(card);
 
-        Console.Write(GetSuitSymbol(card.Suit));
-        Console.Write($"{GetRankSymbol(card.Rank)} ");
-        Console.ResetColor();
+        foreach (string line in lines)
+        {
+            Console.WriteLine(line);
+        }
     }
 
     // Prints the backside of the dealers hidden card.
