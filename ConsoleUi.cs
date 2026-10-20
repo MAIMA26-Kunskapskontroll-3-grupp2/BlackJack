@@ -136,26 +136,22 @@ public class ConsoleUi
 
     // Show a players hand.
     private void ShowPlayerHand(Player player)
-{
-    Console.WriteLine($"{player.Name}:");
-    ShowCards(player.Hand.Cards);
-    Console.WriteLine($"poäng: {player.Hand.CalculateValue()}");
-}
+    {
+        Console.WriteLine($"{player.Name}:");
+        ShowCards(player.Hand.Cards);
+        Console.WriteLine($"poäng: {player.Hand.CalculateValue()}");
+    }
 
     // Show the dealers hand.
     private void ShowDealerHand(Dealer dealer, bool revealDealer)
     {
-        Console.Write($"{dealer.Name}: ");
-        for (int i = 0; i < dealer.Hand.Cards.Count; i++)
+        Console.WriteLine($"{dealer.Name}:");
+        ShowCards(dealer.Hand.Cards, !revealDealer);
+
+        if (revealDealer)
         {
-            if (i == 1 && !revealDealer)
-                ShowHiddenCard();
-            else
-                ShowCard(dealer.Hand.Cards[i]);
+            Console.WriteLine($"poäng: {dealer.Hand.CalculateValue()}");
         }
-        Console.WriteLine(revealDealer
-            ? $"poäng: {dealer.Hand.CalculateValue()}"
-            : "");
     }
 
     // Gets the symbol to print for the rank.
