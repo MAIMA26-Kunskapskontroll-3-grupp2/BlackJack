@@ -92,7 +92,6 @@ public class Game
         round.InitialDeal();
         round.PlayPlayersTurns();
         round.PlayDealerTurn();
-        //round.DetermineOutcomes();
         round.FinishRound();
     }
 
@@ -109,10 +108,11 @@ public class Game
         if (name != null)
         {
             _players.Add(new(name));
-            _storage.SavePlayers(_players);
         }
-
-        _ui.ShowMessage("");
+        else
+        {
+            _ui.ShowMessage("Spelaren måste ha ett namn.");
+        }
 
         ShowPlayers();
     }
@@ -127,12 +127,16 @@ public class Game
 
         int index = _ui.RemovePlayerMenu(_players.Select(p => p.Name).ToArray());
 
+        if (index < 0)
+            return;
+
         if (index == _players.Count)
             return;
 
+
         _players.RemoveAt(index);
-        _storage.SavePlayers(_players);
         ShowPlayers();
+
     }
 
     private void ShowPlayers()
@@ -142,10 +146,8 @@ public class Game
             _ui.ShowMessage("Det finns inga spelare att visa.");
             return;
         }
-        _ui.ShowMessage("Spelare:");
-        for (int i = 0; i < _players.Count; i++)
-        {
-            _ui.ShowMessage($"{i + 1}. {_players[i].Name}");
-        }
+
+        int i = 0;
+        _ui.ShowList("Spelare:", _players.Select(p => $"{++i}. {p.Name}").ToArray());
     }
 }
