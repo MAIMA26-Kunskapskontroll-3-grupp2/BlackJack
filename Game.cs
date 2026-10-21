@@ -87,6 +87,7 @@ public class Game
         {
             _ui.ShowMessage($"Hittade skiljekortet. Blandar skon.");
             _shoe = new(_numberOfDecks);
+            CardCounter.Reset();
         }
 
         Round round = new Round(_shoe, _dealer, _players, _ui, _storage);

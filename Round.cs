@@ -15,6 +15,7 @@ public class Round
         _ui = ui;
         _storage = storage;
     }
+
     // Deal the starting cards according to the rules
     public void InitialDeal()
     {
@@ -28,11 +29,15 @@ public class Round
         // (Players get two open cards, Dealer gets one open and one hidden hole card)
         foreach (Player player in _players)
         {
-            player.AddCard(_shoe.DealCard());
-            player.AddCard(_shoe.DealCard());
+            // Count all visible cards.
+            player.AddCard(CardCounter.CountCard(_shoe.DealCard()));
+            player.AddCard(CardCounter.CountCard(_shoe.DealCard()));
         }
 
-        _dealer.AddCard(_shoe.DealCard());
+        // Count all visible cards.
+        _dealer.AddCard(CardCounter.CountCard(_shoe.DealCard()));
+
+        // Don't count the hole card until it's turned.
         _dealer.AddCard(_shoe.DealCard());
 
         //_ui.ShowHands(_dealer, _players, false); redundant code
@@ -56,8 +61,8 @@ public class Round
 
                 if (choice == Move.Hit)
                 {
-                    // Player gets another card
-                    player.AddCard(_shoe.DealCard());
+                    // Player gets another card and it's counted.
+                    player.AddCard(CardCounter.CountCard(_shoe.DealCard()));
 
                     // Check if you're busted
                     if (player.Hand.IsBust())
@@ -81,9 +86,13 @@ public class Round
     public void PlayDealerTurn()
     {
         _ui.ShowMessage("\nGivare nvänder hålkortet.");
+
+        // Now that the hole card is turned, we can count it.
+        CardCounter.CountCard(_dealer.Hand.Cards[1]);
+
         while (_dealer.ShouldHit())
         {
-            _dealer.AddCard(_shoe.DealCard());
+            _dealer.AddCard(CardCounter.CountCard(_shoe.DealCard()));
         }
 
         //Show all cards, including the dealer's hoel card

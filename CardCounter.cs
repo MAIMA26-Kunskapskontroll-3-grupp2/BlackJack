@@ -1,18 +1,20 @@
 static class CardCounter
 {
-    public static int Count { get; private set; }
+    public static int RunningCount { get; private set; }
 
     // 2 - 6 count as low, 10 - Ace count as hi.
-    public static void CountCard(Card card)
+    public static Card CountCard(Card card)
     {
         if (card.Rank <= Rank.Six)
-            Count--;
+            RunningCount--;
         else if (card.Rank >= Rank.Ten)
-            Count++;
+            RunningCount++;
+
+        return card;
     }
 
     public static void Reset()
     {
-        Count = 0;
+        RunningCount = 0;
     }
 }
