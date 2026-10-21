@@ -53,6 +53,32 @@ public class ConsoleUi
         }
     }
 
+    // Show the house rules menu and get a reply.
+    public int RuleSetMenu(string[] ruleSetNames)
+    {
+        while (true)
+        {
+            Console.WriteLine();
+            for (int i = 0; i < ruleSetNames.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {ruleSetNames[i]}");
+            }
+            Console.Write("Vilka husregler vill ni spela med: ");
+
+            string? input = Console.ReadLine();
+            if (input != null)
+            {
+                if (int.TryParse(input, out int i))
+                {
+                    i--;
+                    if (i >= 0 && i < ruleSetNames.Length)
+                        return i;
+                }
+            }
+            Console.WriteLine("Ogiltigt val.");
+        }
+    }
+    
     // Show a message and get a reply to it.
     public string? GetString(string message)
     {
