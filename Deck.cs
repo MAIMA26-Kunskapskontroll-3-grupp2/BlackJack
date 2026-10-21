@@ -3,7 +3,7 @@ public class Deck
     private List<Card> _cards = new List<Card>();
     private int _numberOfDecks = 1;
     //Reshuffle when this many cards are left, specified in the house rules interval
-    public int CutCard = 15;
+    private int _cutCard = 15;
     private static Random _random = new Random();
     public Deck( int numberOfDecks, int minCutCard, int maxCutCard)
     {
@@ -11,7 +11,7 @@ public class Deck
         _numberOfDecks = numberOfDecks;
 
         //pick random cut card between lower and upper value (upper not included)
-        CutCard = _random.Next(minCutCard, maxCutCard + 1)
+        _cutCard = _random.Next(minCutCard, maxCutCard + 1);
 
 
         BuildShoe();
