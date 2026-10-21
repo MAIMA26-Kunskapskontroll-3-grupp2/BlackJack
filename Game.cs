@@ -11,8 +11,7 @@ public class Game
         // Läs in tidigare sparade resultat.
         string[] savedResults = _storage.Load();
 
-
-        foreach (string line in savedResults)
+        foreach (string line in savedResults.TakeWhile(line => line.Trim() != "STATISTIK"))
         {
             if (!_storage.Validate(line))
             {
@@ -20,6 +19,7 @@ public class Game
                 return;
             }
         }
+
         _players = _storage.LoadPlayers();
         // Start MainMenu()
         while (true)
@@ -33,7 +33,7 @@ public class Game
                     RemovePlayer();
                     break;
                 case 3:
-                    ShowPlayers();
+                    ShowStatistics();
                     break;
                 case 4:
                     PlayGame();
@@ -43,6 +43,20 @@ public class Game
             }
         }
     }
+
+    private void ShowStatistics()
+    {
+        string[] statistics = _storage.LoadStatistics();
+
+        if (statistics.Length == 0)
+        {
+            _ui.ShowMessage("Det finns ingen spelarstatistik att visa.");
+            return;
+        }
+
+        _ui.ShowStatistics(statistics);
+    }
+
 
     private void PlayGame()
     {
@@ -92,7 +106,6 @@ public class Game
         round.InitialDeal();
         round.PlayPlayersTurns();
         round.PlayDealerTurn();
-        //round.DetermineOutcomes();
         round.FinishRound();
     }
 
@@ -109,10 +122,11 @@ public class Game
         if (name != null)
         {
             _players.Add(new(name));
-            _storage.SavePlayers(_players);
         }
-
-        _ui.ShowMessage("");
+        else
+        {
+            _ui.ShowMessage("Spelaren måste ha ett namn.");
+        }
 
         ShowPlayers();
     }
@@ -127,25 +141,27 @@ public class Game
 
         int index = _ui.RemovePlayerMenu(_players.Select(p => p.Name).ToArray());
 
+        if (index < 0)
+            return;
+
         if (index == _players.Count)
             return;
 
+
         _players.RemoveAt(index);
-        _storage.SavePlayers(_players);
         ShowPlayers();
+
     }
 
     private void ShowPlayers()
     {
         if (_players.Count <= 0)
         {
-            _ui.ShowMessage("Det finns inga spelare att visa.");
+            _ui.ShowMessage("Det finns ingen Spelarstatistik att visa.");
             return;
         }
-        _ui.ShowMessage("Spelare:");
-        for (int i = 0; i < _players.Count; i++)
-        {
-            _ui.ShowMessage($"{i + 1}. {_players[i].Name}");
-        }
+
+        int i = 0;
+        _ui.ShowList("Spelare:", _players.Select(p => $"{++i}. {p.Name}").ToArray());
     }
 }
