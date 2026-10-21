@@ -25,7 +25,7 @@ public class HouseRules
     // ----------Constructor-----------
     // rulesetName = the rule set to use, i.e. "Houserule_1"
     // If ruleSetName is empty, the first rule set in the file is used = the "Standard" rules
-    public HouseRules(string ruleSetName = "", string filepath = ".RuleSet.txt")
+    public HouseRules(string ruleSetName = "", string filepath = "./RuleSet.txt")
     {
         try
         {
@@ -295,6 +295,8 @@ public class HouseRules
             winRule = "Natural 21 wins (N21)";
         }
 
+        _ui.ShowMessage("----------------------------------");
         _ui.ShowMessage($"House rules '{ruleSetName}' loaded:\n1. {hitRule}\n2. {NumberOfDecks} deck(s)\n3. Cut-card = {cutCard}\n4. {winRule}");
+        _ui.ShowMessage("----------------------------------");
     }
 }
