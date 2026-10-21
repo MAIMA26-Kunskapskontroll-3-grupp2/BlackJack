@@ -5,6 +5,8 @@ public class Shoe
     private static Random _random = new Random();
     private bool _reShuffle = false;
 
+    public bool IsTimeToShuffle { get { return _reShuffle; } }
+
     public Shoe(int numberOfDecks)
     {
         // Builds and shuffles the shoe at the start of the game
@@ -21,6 +23,9 @@ public class Shoe
 
         foreach (Suit suit in typeof(Suit).GetEnumValues())
         {
+            if (suit == Suit.CutCard)
+                continue;
+
             foreach (Rank rank in typeof(Rank).GetEnumValues())
             {
                 deck.Add(new(suit, rank));
@@ -82,16 +87,5 @@ public class Shoe
         }
 
         return card;
-    }
-
-    public int CardsLeft()
-    {
-        // The amount of cards left
-        return _cards.Count;
-    }
-
-    public bool IsTimeToShuffle()
-    {
-        return _reShuffle;
     }
 }

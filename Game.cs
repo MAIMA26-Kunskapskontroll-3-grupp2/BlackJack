@@ -83,9 +83,9 @@ public class Game
     private void PlayRound()
     {
         // Check the shoe, create a Round object and execute the round's phases
-        if (_shoe.CardsLeft() <= 15)
+        if (_shoe.IsTimeToShuffle)
         {
-            _ui.ShowMessage($"Det finns bara {_shoe.CardsLeft()} kort kvar i leken. Blandar kortleken.");
+            _ui.ShowMessage($"Hittade skiljekortet. Blandar skon.");
             _shoe = new(_numberOfDecks);
         }
 
@@ -93,7 +93,6 @@ public class Game
         round.InitialDeal();
         round.PlayPlayersTurns();
         round.PlayDealerTurn();
-        //round.DetermineOutcomes();
         round.FinishRound();
     }
 
