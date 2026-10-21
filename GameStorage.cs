@@ -42,8 +42,17 @@ public class GameStorage
     public void Save(Dictionary<Player, Outcome> results)
     {
         string[] existingLines = Load();
-        int lastRound = 0;
 
+        int statisticsIndex = Array.FindIndex(
+            existingLines, line => line.Trim() == "STATISTIK");
+
+        if (statisticsIndex >= 0)
+        {
+            existingLines = existingLines.Take(statisticsIndex).ToArray();
+            File.WriteAllLines(path, existingLines);
+        }
+
+        int lastRound = 0;
         foreach (string line in existingLines)
         {
             if (line.StartsWith("Runda ") &&
@@ -123,14 +132,17 @@ public class GameStorage
     {
         string[] lines = Load();
         List<string> history = new List<string>();
+        bool inStatistics = false;
 
         foreach (string line in lines)
         {
-            if (line.StartsWith("Runda "))
+            if (line.Trim() == "STATISTIK")
             {
-                history.Add(line);
+                inStatistics = true;
+                continue;
             }
-            else if (history.Count > 0)
+
+            if (!inStatistics)
             {
                 history.Add(line);
             }
@@ -173,19 +185,34 @@ public class GameStorage
             stats[name][4]++;
         }
 
-        List<string> output = new List<string>
-        {
-            "STATISTIK",
-            $"{ "Spelare",-15} { "Vinster",8} { "Förluster",10} { "Push",6} { "Blackjack",10} { "Rundor",7}",
-            new string('-', 62)
-        };
+        List<string> output = new List<string>(history)
+    {
+        "",
+        "STATISTIK",
+        $"{ "Spelare",-15} { "Vinster",8} { "Förluster",10} { "Push",6} { "Blackjack",10} { "Rundor",7}",
+        new string('-', 62)
+    };
+
         foreach (var player in stats)
         {
             output.Add(
                 $"{player.Key,-15} {player.Value[0],8} {player.Value[1],10} " +
                 $"{player.Value[2],6} {player.Value[3],10} {player.Value[4],7}");
         }
+
         File.WriteAllLines(path, output);
     }
+    public string[] LoadStatistics()
+    {
+        string[] lines = Load();
+        int index = Array.FindIndex(lines, line => line.Trim() == "STATISTIK");
 
+
+        if (index >= 0)
+        {
+            return lines.Skip(index).ToArray();
+        }
+
+        return Array.Empty<string>();
+    }
 }

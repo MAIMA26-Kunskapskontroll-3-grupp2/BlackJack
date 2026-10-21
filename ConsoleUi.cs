@@ -88,6 +88,22 @@ public class ConsoleUi
             Console.WriteLine();
     }
 
+    public void ShowStatistics(string[] lines)
+    {
+        Console.WriteLine("=== SPELARSTATISTIK ===");
+        Console.WriteLine();
+
+        foreach (string line in lines)
+        {
+            Console.WriteLine(line);
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Tryck på en tangent för att fortsätta...");
+        Console.ReadKey(true);
+    }
+
+
     public void NewLine()
     {
         Console.WriteLine();
@@ -160,22 +176,28 @@ public class ConsoleUi
     // Show a players hand.
     private void ShowPlayerHand(Player player)
     {
-        Console.WriteLine($"{player.Name}:");
+        Console.WriteLine($"{player.Name}: Poäng {player.Hand.CalculateValue()}");
         ShowCards(player.Hand.Cards);
-        Console.WriteLine($"poäng: {player.Hand.CalculateValue()}");
+
     }
+
 
     // Show the dealers hand.
     private void ShowDealerHand(Dealer dealer, bool revealDealer)
     {
-        Console.WriteLine($"{dealer.Name}:");
-        ShowCards(dealer.Hand.Cards, !revealDealer);
-
         if (revealDealer)
         {
-            Console.WriteLine($"poäng: {dealer.Hand.CalculateValue()}");
+            Console.WriteLine($"{dealer.Name}: Poäng {dealer.Hand.CalculateValue()}");
         }
+        else
+        {
+            Console.WriteLine($"{dealer.Name}:");
+        }
+
+        ShowCards(dealer.Hand.Cards, !revealDealer);
     }
+
+
     // Visar korten bredvid varandra.
     private void ShowCards(List<Card> cards, bool hideSecondCard = false)
     {

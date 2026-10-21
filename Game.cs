@@ -11,8 +11,7 @@ public class Game
         // Läs in tidigare sparade resultat.
         string[] savedResults = _storage.Load();
 
-
-        foreach (string line in savedResults)
+        foreach (string line in savedResults.TakeWhile(line => line.Trim() != "STATISTIK"))
         {
             if (!_storage.Validate(line))
             {
@@ -20,6 +19,7 @@ public class Game
                 return;
             }
         }
+
         _players = _storage.LoadPlayers();
         // Start MainMenu()
         while (true)
@@ -33,7 +33,7 @@ public class Game
                     RemovePlayer();
                     break;
                 case 3:
-                    ShowPlayers();
+                    ShowStatistics();
                     break;
                 case 4:
                     PlayGame();
@@ -43,6 +43,20 @@ public class Game
             }
         }
     }
+
+    private void ShowStatistics()
+    {
+        string[] statistics = _storage.LoadStatistics();
+
+        if (statistics.Length == 0)
+        {
+            _ui.ShowMessage("Det finns ingen spelarstatistik att visa.");
+            return;
+        }
+
+        _ui.ShowStatistics(statistics);
+    }
+
 
     private void PlayGame()
     {
