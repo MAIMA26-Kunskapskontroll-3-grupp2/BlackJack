@@ -16,6 +16,7 @@ public class Round
         _storage = storage;
     }
 
+
     // Deal the starting cards according to the rules
     public void InitialDeal()
     {
@@ -88,7 +89,7 @@ public class Round
 
     public void PlayDealerTurn()
     {
-        _ui.ShowMessage("\nGivare nvänder hålkortet.");
+        _ui.ShowMessage("Givaren vänder hålkortet.");
 
         // Now that the hole card is turned, we can count it.
         CardCounter.CountCard(_dealer.Hand.Cards[1]);
@@ -119,29 +120,6 @@ public class Round
         {
             //int playerValue = player.Hand.CalculateValue();
             results[player] = GetOutcome(player);
-
-            /*if (player.Hand.IsNatural21())
-            {
-                results[player] = Outcome.BlackJack;
-                continue;
-            }
-
-            if (playerValue > 21)
-            {
-                results[player] = Outcome.Lose;
-            }
-            else if (playerValue < dealerValue)
-            {
-                results[player] = Outcome.Lose;
-            }
-            else if (playerValue > dealerValue)
-            {
-                results[player] = Outcome.Win;
-            }
-            else
-            {
-                results[player] = Outcome.Push;
-            }*/
         }
         return results;
     }
@@ -196,18 +174,21 @@ public class Round
             return Outcome.Push;
         }
     }
+
     public void FinishRound()
     {
         Dictionary<Player, Outcome> results = DetermineOutcomes();
 
-        _ui.ShowMessage("\nResultat:");
+        _ui.ShowMessage("Resultat:", false);
         foreach (Player player in _players)
         {
             Outcome outcome = results[player];
             player.AddResult(outcome);
             _ui.ShowOutcome(player, outcome);
         }
-        //Need to be tested with try-catch
+        _ui.NewLine();
+
+        // Need to be tested with try-catch
         _storage.Save(results);
     }
 }
