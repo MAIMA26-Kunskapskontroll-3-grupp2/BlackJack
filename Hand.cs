@@ -67,11 +67,48 @@ public class Hand
     // Check if an ace is hard or soft
     public bool IsSoft()
     {
-        return false; // Temporary placeholder
+        // Step 1: add hand, every ace count as one (hard)
+        int valueWithAcesAsOne = 0;
+        bool hasAce = false;
+
+        foreach (Card card in _cards)
+        {
+            if (card.Rank == Rank.Ace)
+            {
+                valueWithAcesAsOne += 1;
+                hasAce = true;
+            }
+            else if (card.Rank == Rank.Jack || card.Rank == Rank.Queen || card.Rank == Rank.King)
+            {
+                valueWithAcesAsOne += 10;
+            }
+            else
+            {
+                // Two to Ten worth their number
+                valueWithAcesAsOne += (int)card.Rank;
+            }
+        }
+
+        // Step 2: hand cant be soft without an ace, soft = false
+        if (!hasAce)
+        {
+            return false;
+        }
+
+        // Step 3: if there are ace(s), try let one be 11 ( = +10 )
+        // If the hand is still 21 or less, the hand is soft.
+        if (valueWithAcesAsOne + 10 <= 21)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    // Check if the player got exactly 21 points on their first two cards
-    public bool IsNatural21()
+// Check if the player got exactly 21 points on their first two cards
+public bool IsNatural21()
     {
         return Cards.Count == 2 && CalculateValue() == 21;
     }
