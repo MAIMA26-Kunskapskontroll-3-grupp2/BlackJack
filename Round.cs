@@ -1,15 +1,15 @@
 public class Round
 {
-    private Deck _deck;
+    private Shoe _shoe;
     private Dealer _dealer;
     private List<Player> _players;
     private ConsoleUi _ui;
     private GameStorage _storage;
 
 
-    public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui, GameStorage storage)
+    public Round(Shoe shoe, Dealer dealer, List<Player> players, ConsoleUi ui, GameStorage storage)
     {
-        _deck = deck;
+        _shoe = shoe;
         _dealer = dealer;
         _players = players;
         _ui = ui;
@@ -28,12 +28,12 @@ public class Round
         // (Players get two open cards, Dealer gets one open and one hidden hole card)
         foreach (Player player in _players)
         {
-            player.AddCard(_deck.DealCard());
-            player.AddCard(_deck.DealCard());
+            player.AddCard(_shoe.DealCard());
+            player.AddCard(_shoe.DealCard());
         }
 
-        _dealer.AddCard(_deck.DealCard());
-        _dealer.AddCard(_deck.DealCard());
+        _dealer.AddCard(_shoe.DealCard());
+        _dealer.AddCard(_shoe.DealCard());
 
         //_ui.ShowHands(_dealer, _players, false); redundant code
     }
@@ -57,7 +57,7 @@ public class Round
                 if (choice == Move.Hit)
                 {
                     // Player gets another card
-                    player.AddCard(_deck.DealCard());
+                    player.AddCard(_shoe.DealCard());
 
                     // Check if you're busted
                     if (player.Hand.IsBust())
@@ -83,7 +83,7 @@ public class Round
         _ui.ShowMessage("\nGivare nvänder hålkortet.");
         while (_dealer.ShouldHit())
         {
-            _dealer.AddCard(_deck.DealCard());
+            _dealer.AddCard(_shoe.DealCard());
         }
 
         //Show all cards, including the dealer's hoel card

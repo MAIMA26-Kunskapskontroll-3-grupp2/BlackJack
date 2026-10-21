@@ -1,8 +1,9 @@
 public class Game
 {
+    private const int _numberOfDecks = 6;
     private List<Player> _players = new List<Player>();
     private Dealer _dealer = new Dealer();
-    private Deck _deck = new Deck();
+    private Shoe _shoe = new Shoe(_numberOfDecks);
     private GameStorage _storage = new GameStorage();
     private ConsoleUi _ui = new ConsoleUi();
 
@@ -81,14 +82,14 @@ public class Game
 
     private void PlayRound()
     {
-        // Check the deck, create a Round object and execute the round's phases
-        if (_deck.CardsLeft() <= 15)
+        // Check the shoe, create a Round object and execute the round's phases
+        if (_shoe.CardsLeft() <= 15)
         {
-            _ui.ShowMessage($"Det finns bara {_deck.CardsLeft()} kort kvar i leken. Blandar kortleken.");
-            _deck = new();
+            _ui.ShowMessage($"Det finns bara {_shoe.CardsLeft()} kort kvar i leken. Blandar kortleken.");
+            _shoe = new(_numberOfDecks);
         }
 
-        Round round = new Round(_deck, _dealer, _players, _ui, _storage);
+        Round round = new Round(_shoe, _dealer, _players, _ui, _storage);
         round.InitialDeal();
         round.PlayPlayersTurns();
         round.PlayDealerTurn();

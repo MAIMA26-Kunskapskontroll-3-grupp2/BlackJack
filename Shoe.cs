@@ -1,8 +1,9 @@
 public class Shoe
 {
     private List<Card> _cards = new List<Card>();
-    private int _numberOfDecks = 1;
+    private int _numberOfDecks;
     private static Random _random = new Random();
+    private bool _reShuffle = false;
 
     public Shoe(int numberOfDecks)
     {
@@ -11,6 +12,7 @@ public class Shoe
 
         BuildShoe();
         Shuffle();
+        InsertCutCard();
     }
 
     private List<Card> CreateDeck()
@@ -51,15 +53,34 @@ public class Shoe
         }
     }
 
-    // Throws DeckIsEmptyException
+    private void InsertCutCard()
+    {
+        int index = _random.Next(_cards.Count * 3 / 4, _cards.Count);
+        _cards.Insert(index, new(Suit.CutCard, 0));
+    }
+
+    // Throws ShoeIsEmptyException
     public Card DealCard()
     {
-        // Deals out a card and knows when the deck has reached the minimum amount of cards left
-        if (_cards.Count <= 0)
-            throw new DeckIsEmptyException();
+        Card card;
 
-        Card card = _cards[0];
-        _cards.RemoveAt(0);
+        // Deals out a card and knows when the shoe has reached the minimum amount of cards left
+        while (true)
+        {
+            if (_cards.Count <= 0)
+                throw new ShoeIsEmptyException();
+
+            card = _cards[0];
+            _cards.RemoveAt(0);
+
+            if (card.Suit == Suit.CutCard)
+            {
+                _reShuffle = true;
+                continue;
+            }
+            break;
+        }
+
         return card;
     }
 
@@ -67,5 +88,10 @@ public class Shoe
     {
         // The amount of cards left
         return _cards.Count;
+    }
+
+    public bool IsTimeToShuffle()
+    {
+        return _reShuffle;
     }
 }
