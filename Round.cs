@@ -82,7 +82,7 @@ public class Round
 
     public void PlayDealerTurn()
     {
-        _ui.ShowMessage("\nGivare nvänder hålkortet.");
+        _ui.ShowMessage("\nGivaren avänder hålkortet.");
         while (_dealer.ShouldHit())
         {
             _dealer.AddCard(_deck.DealCard());
