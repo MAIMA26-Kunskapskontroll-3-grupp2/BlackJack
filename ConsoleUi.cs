@@ -9,7 +9,7 @@ public class ConsoleUi
             // Console.WriteLine();
             Console.WriteLine("1. Lägg till spelare");
             Console.WriteLine("2. Ta bort spelare");
-            Console.WriteLine("3. Visa spelare");
+            Console.WriteLine("3. Visa Spelarstatistik");
             Console.WriteLine("4. Börja spela");
             Console.WriteLine("5. Avsluta spelet");
             Console.Write("Vad vill du göra: ");

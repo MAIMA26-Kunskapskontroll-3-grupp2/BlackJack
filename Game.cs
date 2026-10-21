@@ -143,7 +143,7 @@ public class Game
     {
         if (_players.Count <= 0)
         {
-            _ui.ShowMessage("Det finns inga spelare att visa.");
+            _ui.ShowMessage("Det finns ingen Spelarstatistik att visa.");
             return;
         }
 
