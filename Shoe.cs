@@ -2,15 +2,19 @@ public class Shoe
 {
     private List<Card> _cards = new List<Card>();
     private int _numberOfDecks;
+    private int _minCutCard;
+    private int _maxCutCard;
     private static Random _random = new Random();
     private bool _reShuffle = false;
 
     public bool IsTimeToShuffle { get { return _reShuffle; } }
 
-    public Shoe(int numberOfDecks)
+    public Shoe(int numberOfDecks, int minCutCard, int maxCutCard)
     {
         // Builds and shuffles the shoe at the start of the game
         _numberOfDecks = numberOfDecks;
+        _minCutCard = minCutCard;
+        _maxCutCard = maxCutCard;
 
         BuildShoe();
         Shuffle();
@@ -60,7 +64,10 @@ public class Shoe
 
     private void InsertCutCard()
     {
-        int index = _random.Next(_cards.Count * 3 / 4, _cards.Count);
+        int index = _random.Next(_minCutCard,
+            _maxCutCard < _cards.Count
+            ? _maxCutCard
+            : _cards.Count);
         _cards.Insert(index, new(Suit.CutCard, 0));
     }
 
@@ -87,5 +94,10 @@ public class Shoe
         }
 
         return card;
+    }
+
+    public int RemainingDecks()
+    {
+        return _cards.Count / 52;
     }
 }

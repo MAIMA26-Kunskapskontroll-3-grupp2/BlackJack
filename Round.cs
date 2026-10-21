@@ -52,6 +52,8 @@ public class Round
 
             while (playerTurnActive)
             {
+                _ui.ShowCardCount(_shoe.RemainingDecks());
+
                 // Show the players' current cards on the screen
                 // One of the dealer's card is still hidden, therefore the argument is false
                 _ui.ShowHands(_dealer, _players, false);
@@ -67,6 +69,7 @@ public class Round
                     // Check if you're busted
                     if (player.Hand.IsBust())
                     {
+                        _ui.ShowCardCount(_shoe.RemainingDecks());
                         _ui.ShowHands(_dealer, _players, false);
                         // Display 'you're busted' message
                         _ui.ShowBustMessage(player);
@@ -94,6 +97,8 @@ public class Round
         {
             _dealer.AddCard(CardCounter.CountCard(_shoe.DealCard()));
         }
+
+        _ui.ShowCardCount(_shoe.RemainingDecks());
 
         //Show all cards, including the dealer's hoel card
         _ui.ShowHands(_dealer, _players, true);

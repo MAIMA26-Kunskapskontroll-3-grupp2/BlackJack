@@ -1,9 +1,14 @@
 public class Game
 {
     private const int _numberOfDecks = 6;
+    private const int _minCutCard = 234;
+    private const int _maxCutCard = 312;
     private List<Player> _players = new List<Player>();
     private Dealer _dealer = new Dealer();
-    private Shoe _shoe = new Shoe(_numberOfDecks);
+    private Shoe _shoe = new Shoe(
+        _numberOfDecks,
+        _minCutCard,
+        _maxCutCard);
     private GameStorage _storage = new GameStorage();
     private ConsoleUi _ui = new ConsoleUi();
 
@@ -86,7 +91,7 @@ public class Game
         if (_shoe.IsTimeToShuffle)
         {
             _ui.ShowMessage($"Hittade skiljekortet. Blandar skon.");
-            _shoe = new(_numberOfDecks);
+            _shoe = new(_numberOfDecks, _minCutCard, _maxCutCard);
             CardCounter.Reset();
         }
 

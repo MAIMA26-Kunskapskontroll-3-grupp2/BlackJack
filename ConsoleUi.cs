@@ -80,6 +80,17 @@ public class ConsoleUi
         ShowDealerHand(dealer, revealDealer);
     }
 
+    public void ShowCardCount(int remainingDecks)
+    {
+        int trueCount = CardCounter.TrueCount(remainingDecks);
+        Console.WriteLine($"Running count: {CardCounter.RunningCount}");
+        Console.WriteLine($"True count: {trueCount}.");
+        if (trueCount < 0)
+            Console.WriteLine("Det ser ljust ut!");
+        else if (trueCount > 0)
+            Console.WriteLine("Det ser mörkt ut.");
+    }
+
     // Ask the player if they want to hit or stand
     public Move AskForMove(Player player)
     {
