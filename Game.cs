@@ -1,8 +1,9 @@
 public class Game
 {
     private List<Player> _players = new List<Player>();
-    private Dealer _dealer = new Dealer();
-    private Deck _deck = new Deck();
+    private HouseRules _rules = null!;
+    private Dealer _dealer = null!;
+    private Deck _deck = null!;
     private GameStorage _storage = new GameStorage();
     private ConsoleUi _ui = new ConsoleUi();
 
@@ -51,6 +52,8 @@ public class Game
             _ui.ShowMessage("Det finns inga spelare. Var vänlig och lägg till minst en spelare.");
             return;
         }
+
+        ChooseHouseRules();
 
         bool keepPlaying = true;
 

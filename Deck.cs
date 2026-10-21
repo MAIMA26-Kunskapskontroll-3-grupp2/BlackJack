@@ -1,22 +1,45 @@
 public class Deck
 {
     private List<Card> _cards = new List<Card>();
+    private int _numberOfDecks = 1;
+    //Reshuffle when this many cards are left, specified in the house rules interval
+    public int CutCard = 15;
     private static Random _random = new Random();
-
-    public Deck()
+    public Deck( int numberOfDecks, int minCutCard, int maxCutCard)
     {
         // Builds and shuffles the deck at the start of the game
+        _numberOfDecks = numberOfDecks;
+
+        //pick random cut card between lower and upper value (upper not included)
+        CutCard = _random.Next(minCutCard, maxCutCard + 1)
+
+
+        BuildShoe();
+        Shuffle();
+    }
+
+    private List<Card> CreateDeck()
+    {
+        List<Card> deck = [];
+
         foreach (Suit suit in typeof(Suit).GetEnumValues())
         {
             foreach (Rank rank in typeof(Rank).GetEnumValues())
             {
-                _cards.Add(new(suit, rank));
+                deck.Add(new(suit, rank));
             }
         }
 
-        Shuffle();
+        return deck;
     }
 
+    private void BuildShoe()
+    {
+        for (int i = 0; i < _numberOfDecks; i++)
+        {
+            _cards.AddRange(CreateDeck());
+        }
+    }
     private void Shuffle()
     {
         for (int i = _cards.Count - 1; i > 0; i--)
@@ -48,5 +71,10 @@ public class Deck
     {
         // The amount of cards left
         return _cards.Count;
+    }
+    // True when the cut card is reached and the shoe should be reshuffled
+    public bool NeedsReshuffle()
+    {
+        return _cards.Count <= _cutCard;
     }
 }
