@@ -5,34 +5,6 @@ using System.IO;
 public class GameStorage
 {
     private string path;
-    public List<Player> LoadPlayers()
-    {
-        List<Player> players = new();
-
-        foreach (string line in Load())
-        {
-            string[] parts = line.Split('|');
-
-            if (parts.Length != 3)
-                continue;
-
-            string name = parts[0].Trim();
-            string outcome = parts[2].Trim();
-
-            if (string.IsNullOrWhiteSpace(name))
-                continue;
-
-            if (!Enum.TryParse<Outcome>(outcome, out _))
-                continue;
-
-            if (!players.Exists(player => player.Name == name))
-            {
-                players.Add(new Player(name));
-            }
-        }
-
-        return players;
-    }
 
     public GameStorage(string path = "results.txt")
     {
@@ -98,7 +70,7 @@ public class GameStorage
             Console.WriteLine("Du saknar behörighet att komma åt spelfilen.");
         }
     }
-    
+
     public string[] Load()
     {
         if (!File.Exists(path))

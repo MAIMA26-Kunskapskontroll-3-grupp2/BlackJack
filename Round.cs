@@ -171,7 +171,6 @@ public class Round
         }
         _ui.NewLine();
 
-        // Need to be tested with try-catch
         _storage.Save(results);
     }
 }

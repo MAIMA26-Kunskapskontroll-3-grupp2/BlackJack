@@ -9,7 +9,20 @@
     public void Run()
     {
         // Läs in tidigare sparade resultat.
-        string[] savedResults = _storage.Load();
+        string[] savedResults;
+
+        try
+        {
+            savedResults = _storage.Load();
+        }
+        catch (IOException)
+        {
+            return;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return;
+        }
 
         foreach (string line in savedResults.TakeWhile(line => line.Trim() != "STATISTIK"))
         {
