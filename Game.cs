@@ -1,4 +1,4 @@
-public class Game
+﻿public class Game
 {
     private List<Player> _players = new List<Player>();
     private Dealer _dealer = new Dealer();
@@ -19,8 +19,6 @@ public class Game
                 return;
             }
         }
-
-        _players = _storage.LoadPlayers();
         // Start MainMenu()
         while (true)
         {
