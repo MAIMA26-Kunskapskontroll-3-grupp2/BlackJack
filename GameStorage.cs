@@ -41,53 +41,64 @@ public class GameStorage
 
     public void Save(Dictionary<Player, Outcome> results)
     {
-        string[] existingLines = Load();
-
-        int statisticsIndex = Array.FindIndex(
-            existingLines, line => line.Trim() == "STATISTIK");
-
-        if (statisticsIndex >= 0)
+        try
         {
-            existingLines = existingLines.Take(statisticsIndex).ToArray();
-            File.WriteAllLines(path, existingLines);
-        }
+            string[] existingLines = Load();
 
-        int lastRound = 0;
-        foreach (string line in existingLines)
-        {
-            if (line.StartsWith("Runda ") &&
-                int.TryParse(line.Substring(6), out int number) &&
-                number > lastRound)
+            int statisticsIndex = Array.FindIndex(
+                existingLines, line => line.Trim() == "STATISTIK");
+
+            if (statisticsIndex >= 0)
             {
-                lastRound = number;
+                existingLines = existingLines.Take(statisticsIndex).ToArray();
+                File.WriteAllLines(path, existingLines);
             }
-        }
 
-        int nextRound = lastRound + 1;
-
-        using (StreamWriter writer = new StreamWriter(path, true))
-        {
-            if (existingLines.Length > 0 &&
-                !string.IsNullOrWhiteSpace(existingLines[^1]))
+            int lastRound = 0;
+            foreach (string line in existingLines)
             {
+                if (line.StartsWith("Runda ") &&
+                    int.TryParse(line.Substring(6), out int number) &&
+                    number > lastRound)
+                {
+                    lastRound = number;
+                }
+            }
+
+            int nextRound = lastRound + 1;
+
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                if (existingLines.Length > 0 &&
+                    !string.IsNullOrWhiteSpace(existingLines[^1]))
+                {
+                    writer.WriteLine();
+                }
+
+                writer.WriteLine($"Runda {nextRound}");
+                writer.WriteLine("Spelare | Poäng | Resultat");
+
+                foreach (var result in results)
+                {
+                    int points = result.Key.Hand.CalculateValue();
+                    writer.WriteLine($"{result.Key.Name} | {points} | {result.Value}");
+                }
+
                 writer.WriteLine();
             }
 
-            writer.WriteLine($"Runda {nextRound}");
-            writer.WriteLine("Spelare | Poäng | Resultat");
-
-            foreach (var result in results)
-            {
-                int points = result.Key.Hand.CalculateValue();
-                writer.WriteLine($"{result.Key.Name} | {points} | {result.Value}");
-            }
-
-            writer.WriteLine();
+            UpdateStatistics();
         }
-
-        UpdateStatistics();
+        catch (IOException)
+        {
+            Console.WriteLine("Kunde inte läsa eller spara spelfilen.");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Console.WriteLine("Du saknar behörighet att komma åt spelfilen.");
+        }
     }
-
+    
     public string[] Load()
     {
         if (!File.Exists(path))
