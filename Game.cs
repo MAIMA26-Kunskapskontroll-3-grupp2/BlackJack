@@ -8,21 +8,11 @@
 
     public void Run()
     {
-        // Läs in tidigare sparade resultat.
-        string[] savedResults;
+        _players = _storage.LoadPlayers();
 
-        try
-        {
-            savedResults = _storage.Load();
-        }
-        catch (IOException)
-        {
-            return;
-        }
-        catch (UnauthorizedAccessException)
-        {
-            return;
-        }
+        // Läs in tidigare sparade resultat.
+        string[] savedResults = _storage.Load();
+
 
         foreach (string line in savedResults.TakeWhile(line => line.Trim() != "STATISTIK"))
         {
@@ -128,11 +118,12 @@
             return;
         }
 
-        string? name = _ui.GetString($"Ange spelarens namn: ");
+        string? name = _ui.GetString("Ange spelarens namn: ");
 
         if (name != null)
         {
-            _players.Add(new(name));
+            _players.Add(new Player(name));
+            _storage.SavePlayers(_players);
         }
         else
         {
@@ -140,7 +131,9 @@
         }
 
         ShowPlayers();
+
     }
+
 
     private void RemovePlayer()
     {
@@ -160,6 +153,7 @@
 
 
         _players.RemoveAt(index);
+        _storage.SavePlayers(_players);
         ShowPlayers();
 
     }

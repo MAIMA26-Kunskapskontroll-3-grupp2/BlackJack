@@ -13,87 +13,123 @@ public class GameStorage
 
     public void Save(Dictionary<Player, Outcome> results)
     {
+        Dictionary<string, int[]> stats = new Dictionary<string, int[]>();
+
+        foreach (string line in Load())
+        {
+            if (line.Trim() == "STATISTIK" ||
+                line.StartsWith("Spelare") ||
+                line.StartsWith("---") ||
+                string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
+
+            string[] parts = line.Split(
+                ' ', StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length < 6)
+                continue;
+
+            string name = string.Join(" ", parts.Take(parts.Length - 5));
+
+            int start = parts.Length - 5;
+
+            if (int.TryParse(parts[start], out int wins) &&
+                int.TryParse(parts[start + 1], out int losses) &&
+                int.TryParse(parts[start + 2], out int pushes) &&
+                int.TryParse(parts[start + 3], out int blackjacks) &&
+                int.TryParse(parts[start + 4], out int rounds))
+            {
+                stats[name] = new int[]
+                {
+                wins, losses, pushes, blackjacks, rounds
+                };
+            }
+        }
+
+        foreach (var result in results)
+        {
+            string name = result.Key.Name;
+
+            if (!stats.ContainsKey(name))
+                stats[name] = new int[5];
+
+            int[] playerStats = stats[name];
+
+            switch (result.Value.ToString())
+            {
+                case "Win":
+                    playerStats[0]++;
+                    break;
+
+                case "Lose":
+                    playerStats[1]++;
+                    break;
+
+                case "Push":
+                    playerStats[2]++;
+                    break;
+
+                case "BlackJack":
+                    playerStats[0]++;
+                    playerStats[3]++;
+                    break;
+            }
+
+            playerStats[4]++;
+        }
+
+        List<string> output = new List<string>
+    {
+        "STATISTIK",
+        $"{ "Spelare",-15} { "Vinster",8} { "Förluster",10} { "Push",6} { "Blackjack",10} { "Rundor",7}",
+        new string('-', 62)
+    };
+
+        foreach (var player in stats)
+        {
+            output.Add(
+                $"{player.Key,-15} {player.Value[0],8} {player.Value[1],10} " +
+                $"{player.Value[2],6} {player.Value[3],10} {player.Value[4],7}");
+        }
+
         try
         {
-            string[] existingLines = Load();
-
-            int statisticsIndex = Array.FindIndex(
-                existingLines, line => line.Trim() == "STATISTIK");
-
-            if (statisticsIndex >= 0)
-            {
-                existingLines = existingLines.Take(statisticsIndex).ToArray();
-                File.WriteAllLines(path, existingLines);
-            }
-
-            int lastRound = 0;
-            foreach (string line in existingLines)
-            {
-                if (line.StartsWith("Runda ") &&
-                    int.TryParse(line.Substring(6), out int number) &&
-                    number > lastRound)
-                {
-                    lastRound = number;
-                }
-            }
-
-            int nextRound = lastRound + 1;
-
-            using (StreamWriter writer = new StreamWriter(path, true))
-            {
-                if (existingLines.Length > 0 &&
-                    !string.IsNullOrWhiteSpace(existingLines[^1]))
-                {
-                    writer.WriteLine();
-                }
-
-                writer.WriteLine($"Runda {nextRound}");
-                writer.WriteLine("Spelare | Poäng | Resultat");
-
-                foreach (var result in results)
-                {
-                    int points = result.Key.Hand.CalculateValue();
-                    writer.WriteLine($"{result.Key.Name} | {points} | {result.Value}");
-                }
-
-                writer.WriteLine();
-            }
-
-            UpdateStatistics();
+            File.WriteAllLines(path, output);
         }
         catch (IOException)
         {
-            Console.WriteLine("Kunde inte läsa eller spara spelfilen.");
+            Console.WriteLine("Kunde inte spara statistiken.");
         }
         catch (UnauthorizedAccessException)
         {
-            Console.WriteLine("Du saknar behörighet att komma åt spelfilen.");
+            Console.WriteLine("Du saknar behörighet att spara statistiken.");
         }
     }
 
     public string[] Load()
     {
-        if (!File.Exists(path))
-        {
-            return Array.Empty<string>();
-        }
-
         try
         {
+            if (!File.Exists(path))
+            {
+                return Array.Empty<string>();
+            }
+
             return File.ReadAllLines(path);
         }
         catch (IOException)
         {
             Console.WriteLine("Kunde inte läsa spelfilen.");
-            throw;
         }
         catch (UnauthorizedAccessException)
         {
             Console.WriteLine("Du har inte behörighet att läsa spelfilen.");
-            throw;
         }
-    }
 
+        return Array.Empty<string>();
+    }
 
     public bool Validate(string line)
     {
@@ -126,80 +162,7 @@ public class GameStorage
 
         return validName && validPoints && validOutcome;
     }
-    public void UpdateStatistics()
-    {
-        string[] lines = Load();
-        List<string> history = new List<string>();
-        bool inStatistics = false;
 
-        foreach (string line in lines)
-        {
-            if (line.Trim() == "STATISTIK")
-            {
-                inStatistics = true;
-                continue;
-            }
-
-            if (!inStatistics)
-            {
-                history.Add(line);
-            }
-        }
-
-        Dictionary<string, int[]> stats = new Dictionary<string, int[]>();
-
-        foreach (string line in history)
-        {
-            if (line.StartsWith("Runda ") ||
-                line.StartsWith("Spelare |") ||
-                string.IsNullOrWhiteSpace(line))
-            {
-                continue;
-            }
-
-            string[] parts = line.Split('|');
-
-            if (parts.Length != 3)
-                continue;
-
-            string name = parts[0].Trim();
-            string outcome = parts[2].Trim();
-
-            if (!stats.ContainsKey(name))
-                stats[name] = new int[5];
-
-            if (outcome == "Win")
-                stats[name][0]++;
-            else if (outcome == "Lose")
-                stats[name][1]++;
-            else if (outcome == "Push")
-                stats[name][2]++;
-            else if (outcome == "BlackJack")
-            {
-                stats[name][0]++;
-                stats[name][3]++;
-            }
-
-            stats[name][4]++;
-        }
-
-        List<string> output = new List<string>(history)
-    {
-        "",
-        "STATISTIK",
-        $"{ "Spelare",-15} { "Vinster",8} { "Förluster",10} { "Push",6} { "Blackjack",10} { "Rundor",7}",
-        new string('-', 62)
-    };
-
-        foreach (var player in stats)
-        {
-            output.Add(
-                $"{player.Key,-15} {player.Value[0],8} {player.Value[1],10} " +
-                $"{player.Value[2],6} {player.Value[3],10} {player.Value[4],7}");
-        }
-
-        File.WriteAllLines(path, output);
-    }
     public string[] LoadStatistics()
     {
         string[] lines = Load();
@@ -212,5 +175,51 @@ public class GameStorage
         }
 
         return Array.Empty<string>();
+
     }
+    public List<Player> LoadPlayers()
+    {
+        List<Player> players = new List<Player>();
+
+        try
+        {
+            if (!File.Exists("players.txt"))
+                return players;
+
+            foreach (string line in File.ReadAllLines("players.txt"))
+            {
+                string name = line.Trim();
+
+                if (!string.IsNullOrWhiteSpace(name))
+                    players.Add(new Player(name));
+            }
+        }
+        catch (IOException)
+        {
+            Console.WriteLine("Kunde inte läsa spelarfilerna.");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Console.WriteLine("Du saknar behörighet att läsa spelarfilerna.");
+        }
+
+        return players;
+    }
+
+    public void SavePlayers(List<Player> players)
+    {
+        try
+        {
+            File.WriteAllLines("players.txt", players.Select(player => player.Name));
+        }
+        catch (IOException)
+        {
+            Console.WriteLine("Kunde inte spara spelarna.");
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Console.WriteLine("Du saknar behörighet att spara spelarna.");
+        }
+    }
+
 }
