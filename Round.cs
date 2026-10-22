@@ -17,6 +17,7 @@ public class Round
         _storage = storage;
         _rules = rules;
     }
+
     // Deal the starting cards according to the rules
     public void InitialDeal()
     {
@@ -36,8 +37,6 @@ public class Round
 
         _dealer.AddCard(_deck.DealCard());
         _dealer.AddCard(_deck.DealCard());
-
-        //_ui.ShowHands(_dealer, _players, false); redundant code
     }
 
     public void PlayPlayersTurns()
@@ -82,7 +81,7 @@ public class Round
 
     public void PlayDealerTurn()
     {
-        _ui.ShowMessage("\nGivaren avänder hålkortet.");
+        _ui.ShowMessage("Givaren vänder hålkortet.");
         while (_dealer.ShouldHit())
         {
             _dealer.AddCard(_deck.DealCard());
@@ -107,29 +106,6 @@ public class Round
         {
             //int playerValue = player.Hand.CalculateValue();
             results[player] = GetOutcome(player);
-
-            /*if (player.Hand.IsNatural21())
-            {
-                results[player] = Outcome.BlackJack;
-                continue;
-            }
-
-            if (playerValue > 21)
-            {
-                results[player] = Outcome.Lose;
-            }
-            else if (playerValue < dealerValue)
-            {
-                results[player] = Outcome.Lose;
-            }
-            else if (playerValue > dealerValue)
-            {
-                results[player] = Outcome.Win;
-            }
-            else
-            {
-                results[player] = Outcome.Push;
-            }*/
         }
         return results;
     }
@@ -188,18 +164,21 @@ public class Round
             return Outcome.Push;
         }
     }
+
     public void FinishRound()
     {
         Dictionary<Player, Outcome> results = DetermineOutcomes();
 
-        _ui.ShowMessage("\nResultat:");
+        _ui.ShowMessage("Resultat:", false);
         foreach (Player player in _players)
         {
             Outcome outcome = results[player];
             player.AddResult(outcome);
             _ui.ShowOutcome(player, outcome);
         }
-        //Need to be tested with try-catch
+        _ui.NewLine();
+
+        // Need to be tested with try-catch
         _storage.Save(results);
     }
 }

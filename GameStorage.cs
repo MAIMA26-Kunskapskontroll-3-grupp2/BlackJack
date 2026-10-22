@@ -5,22 +5,27 @@ using System.IO;
 public class GameStorage
 {
     private string path;
-
-    // TEMPORARY TEST: Verify that player results are saved between rounds.
-    // Remove after code review.
-    public void SavePlayers(List<Player> players)
-    {
-        File.WriteAllLines("players.txt",
-            players.ConvertAll(player => player.Name));
-    }
-
     public List<Player> LoadPlayers()
     {
         List<Player> players = new();
 
-        if (File.Exists("players.txt"))
+        foreach (string line in Load())
         {
-            foreach (string name in File.ReadAllLines("players.txt"))
+            string[] parts = line.Split('|');
+
+            if (parts.Length != 3)
+                continue;
+
+            string name = parts[0].Trim();
+            string outcome = parts[2].Trim();
+
+            if (string.IsNullOrWhiteSpace(name))
+                continue;
+
+            if (!Enum.TryParse<Outcome>(outcome, out _))
+                continue;
+
+            if (!players.Exists(player => player.Name == name))
             {
                 players.Add(new Player(name));
             }
@@ -28,15 +33,26 @@ public class GameStorage
 
         return players;
     }
+
     public GameStorage(string path = "results.txt")
     {
         this.path = path;
     }
+
     public void Save(Dictionary<Player, Outcome> results)
     {
         string[] existingLines = Load();
-        int lastRound = 0;
 
+        int statisticsIndex = Array.FindIndex(
+            existingLines, line => line.Trim() == "STATISTIK");
+
+        if (statisticsIndex >= 0)
+        {
+            existingLines = existingLines.Take(statisticsIndex).ToArray();
+            File.WriteAllLines(path, existingLines);
+        }
+
+        int lastRound = 0;
         foreach (string line in existingLines)
         {
             if (line.StartsWith("Runda ") &&
@@ -68,6 +84,8 @@ public class GameStorage
 
             writer.WriteLine();
         }
+
+        UpdateStatistics();
     }
 
     public string[] Load()
@@ -76,7 +94,6 @@ public class GameStorage
         {
             return new string[0];
         }
-
         return File.ReadAllLines(path);
     }
 
@@ -110,5 +127,92 @@ public class GameStorage
             outcomeText, out _);
 
         return validName && validPoints && validOutcome;
+    }
+    public void UpdateStatistics()
+    {
+        string[] lines = Load();
+        List<string> history = new List<string>();
+        bool inStatistics = false;
+
+        foreach (string line in lines)
+        {
+            if (line.Trim() == "STATISTIK")
+            {
+                inStatistics = true;
+                continue;
+            }
+
+            if (!inStatistics)
+            {
+                history.Add(line);
+            }
+        }
+
+        Dictionary<string, int[]> stats = new Dictionary<string, int[]>();
+
+        foreach (string line in history)
+        {
+            if (line.StartsWith("Runda ") ||
+                line.StartsWith("Spelare |") ||
+                string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
+
+            string[] parts = line.Split('|');
+
+            if (parts.Length != 3)
+                continue;
+
+            string name = parts[0].Trim();
+            string outcome = parts[2].Trim();
+
+            if (!stats.ContainsKey(name))
+                stats[name] = new int[5];
+
+            if (outcome == "Win")
+                stats[name][0]++;
+            else if (outcome == "Lose")
+                stats[name][1]++;
+            else if (outcome == "Push")
+                stats[name][2]++;
+            else if (outcome == "BlackJack")
+            {
+                stats[name][0]++;
+                stats[name][3]++;
+            }
+
+            stats[name][4]++;
+        }
+
+        List<string> output = new List<string>(history)
+    {
+        "",
+        "STATISTIK",
+        $"{ "Spelare",-15} { "Vinster",8} { "Förluster",10} { "Push",6} { "Blackjack",10} { "Rundor",7}",
+        new string('-', 62)
+    };
+
+        foreach (var player in stats)
+        {
+            output.Add(
+                $"{player.Key,-15} {player.Value[0],8} {player.Value[1],10} " +
+                $"{player.Value[2],6} {player.Value[3],10} {player.Value[4],7}");
+        }
+
+        File.WriteAllLines(path, output);
+    }
+    public string[] LoadStatistics()
+    {
+        string[] lines = Load();
+        int index = Array.FindIndex(lines, line => line.Trim() == "STATISTIK");
+
+
+        if (index >= 0)
+        {
+            return lines.Skip(index).ToArray();
+        }
+
+        return Array.Empty<string>();
     }
 }
