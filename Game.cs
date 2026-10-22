@@ -8,20 +8,9 @@
 
     public void Run()
     {
+        _storage.Load();
         _players = _storage.LoadPlayers();
 
-        // Läs in tidigare sparade resultat.
-        string[] savedResults = _storage.Load();
-
-
-        foreach (string line in savedResults.TakeWhile(line => line.Trim() != "STATISTIK"))
-        {
-            if (!_storage.Validate(line))
-            {
-                _ui.ShowMessage("Felaktigt format i results.txt.");
-                return;
-            }
-        }
         // Start MainMenu()
         while (true)
         {

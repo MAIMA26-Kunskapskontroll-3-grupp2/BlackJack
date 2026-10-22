@@ -131,38 +131,6 @@ public class GameStorage
         return Array.Empty<string>();
     }
 
-    public bool Validate(string line)
-    {
-        if (string.IsNullOrWhiteSpace(line))
-            return true;
-
-        if (line.StartsWith("Runda "))
-            return int.TryParse(line.Substring(6), out int roundNumber)
-                   && roundNumber > 0;
-
-        if (line.StartsWith("Spelare |"))
-            return true;
-
-        string[] parts = line.Split('|');
-
-        if (parts.Length != 3)
-            return false;
-
-        string name = parts[0].Trim();
-        string pointsText = parts[1].Trim();
-        string outcomeText = parts[2].Trim();
-
-        bool validName = !string.IsNullOrWhiteSpace(name);
-
-        bool validPoints = int.TryParse(pointsText, out int points)
-                           && points >= 0;
-
-        bool validOutcome = Enum.TryParse<Outcome>(
-            outcomeText, out _);
-
-        return validName && validPoints && validOutcome;
-    }
-
     public string[] LoadStatistics()
     {
         string[] lines = Load();
