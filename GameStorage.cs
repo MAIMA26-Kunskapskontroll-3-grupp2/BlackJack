@@ -92,10 +92,25 @@ public class GameStorage
     {
         if (!File.Exists(path))
         {
-            return new string[0];
+            return Array.Empty<string>();
         }
-        return File.ReadAllLines(path);
+
+        try
+        {
+            return File.ReadAllLines(path);
+        }
+        catch (IOException)
+        {
+            Console.WriteLine("Kunde inte läsa spelfilen.");
+            throw;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            Console.WriteLine("Du har inte behörighet att läsa spelfilen.");
+            throw;
+        }
     }
+
 
     public bool Validate(string line)
     {
