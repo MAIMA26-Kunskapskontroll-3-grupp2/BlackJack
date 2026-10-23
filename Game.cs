@@ -1,4 +1,4 @@
-public class Game
+﻿public class Game
 {
     private List<Player> _players = new List<Player>();
     private Dealer _dealer = new Dealer();
@@ -8,19 +8,9 @@ public class Game
 
     public void Run()
     {
-        // Läs in tidigare sparade resultat.
-        string[] savedResults = _storage.Load();
-
-        foreach (string line in savedResults.TakeWhile(line => line.Trim() != "STATISTIK"))
-        {
-            if (!_storage.Validate(line))
-            {
-                _ui.ShowMessage("Felaktigt format i results.txt.");
-                return;
-            }
-        }
-
+        _storage.Load();
         _players = _storage.LoadPlayers();
+
         // Start MainMenu()
         while (true)
         {
@@ -117,11 +107,12 @@ public class Game
             return;
         }
 
-        string? name = _ui.GetString($"Ange spelarens namn: ");
+        string? name = _ui.GetString("Ange spelarens namn: ");
 
         if (name != null)
         {
-            _players.Add(new(name));
+            _players.Add(new Player(name));
+            _storage.SavePlayers(_players);
         }
         else
         {
@@ -129,7 +120,9 @@ public class Game
         }
 
         ShowPlayers();
+
     }
+
 
     private void RemovePlayer()
     {
@@ -149,6 +142,7 @@ public class Game
 
 
         _players.RemoveAt(index);
+        _storage.SavePlayers(_players);
         ShowPlayers();
 
     }
