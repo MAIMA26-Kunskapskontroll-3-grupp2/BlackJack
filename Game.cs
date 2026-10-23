@@ -1,10 +1,14 @@
 ﻿public class Game
 {
     private List<Player> _players = new List<Player>();
-    private Dealer _dealer = new Dealer();
-    private Deck _deck = new Deck();
     private GameStorage _storage = new GameStorage();
     private ConsoleUi _ui = new ConsoleUi();
+
+    // set by ChooseHouseRules() before every new game
+    // "null", they will get a value before they are used
+    private HouseRules _rules = null!;
+    private Dealer _dealer = null!;
+    private Deck _deck = null!;
 
     public void Run()
     {
@@ -56,6 +60,10 @@
             return;
         }
 
+        ChooseHouseRules();
+        _dealer = new Dealer(_rules);
+        _deck = CreateShoe();
+
         bool keepPlaying = true;
 
         while (keepPlaying)
@@ -83,16 +91,38 @@
         }
     }
 
+    // Let the players choose which house rules to play with
+    private void ChooseHouseRules()
+    {
+        List<string> ruleSetNames = HouseRules.GetRuleSetNames();
+
+        // If the rule file is missing or empty, HouseRules uses the standard rules
+        if (ruleSetNames.Count == 0)
+        {
+            _rules = new HouseRules();
+            return;
+        }
+
+        int index = _ui.RuleSetMenu(ruleSetNames.ToArray());
+        _rules = new HouseRules(ruleSetNames[index]);
+    }
+
+    // Create a new shuffled shoe with the number of decks and cut card from the house rules
+    private Deck CreateShoe()
+    {
+        return new Deck(_rules.NumberOfDecks, _rules.MinCutCard, _rules.MaxCutCard);
+    }
+
     private void PlayRound()
     {
         // Check the deck, create a Round object and execute the round's phases
-        if (_deck.CardsLeft() <= 15)
+        if (_deck.NeedsReshuffle())
         {
             _ui.ShowMessage($"Det finns bara {_deck.CardsLeft()} kort kvar i leken. Blandar kortleken.");
-            _deck = new();
+            _deck = CreateShoe();
         }
 
-        Round round = new Round(_deck, _dealer, _players, _ui, _storage);
+        Round round = new Round(_deck, _dealer, _players, _ui, _storage, _rules);
         round.InitialDeal();
         round.PlayPlayersTurns();
         round.PlayDealerTurn();

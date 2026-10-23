@@ -68,6 +68,32 @@ public class ConsoleUi
         Console.WriteLine();
     }
 
+    // Show the house rules menu and get a reply.
+    public int RuleSetMenu(string[] ruleSetNames)
+    {
+        while (true)
+        {
+            Console.WriteLine();
+            for (int i = 0; i < ruleSetNames.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {ruleSetNames[i]}");
+            }
+            Console.Write("Vilka husregler vill ni spela med: ");
+
+            string? input = Console.ReadLine();
+            if (input != null)
+            {
+                if (int.TryParse(input, out int i))
+                {
+                    i--;
+                    if (i >= 0 && i < ruleSetNames.Length)
+                        return i;
+                }
+            }
+            Console.WriteLine("Ogiltigt val.");
+        }
+    }
+    
     // Show a message and get a reply to it.
     public string? GetString(string message)
     {
@@ -109,6 +135,14 @@ public class ConsoleUi
         Console.WriteLine();
     }
 
+    // Show an error message
+    public void ShowErrorMessage(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+    
     // Show the current cards of the players and the dealer
     public void ShowHands(Dealer dealer, List<Player> players, bool revealDealer)
     {
