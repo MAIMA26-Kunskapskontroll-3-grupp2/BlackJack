@@ -5,15 +5,17 @@ public class Round
     private List<Player> _players;
     private ConsoleUi _ui;
     private GameStorage _storage;
+    private HouseRules _rules;
 
 
-    public Round(Shoe shoe, Dealer dealer, List<Player> players, ConsoleUi ui, GameStorage storage)
+    public Round(Shoe shoe, Dealer dealer, List<Player> players, ConsoleUi ui, GameStorage storage, HouseRules rules)
     {
         _shoe = shoe;
         _dealer = dealer;
         _players = players;
         _ui = ui;
         _storage = storage;
+        _rules = rules;
     }
 
 
@@ -135,21 +137,25 @@ public class Round
             return Outcome.Lose;
         }
 
-        //natural for dealer/player is a draw (push)
-        if (playerHand.IsNatural21() && dealerHand.IsNatural21())
+        // only when thhe house rules say that natural 21 beats a 21 of three or more cards
+        if (_rules.NaturalBeats21)
         {
-            return Outcome.Push;
-        }
+            //natural for dealer/player is a draw (push)
+            if (playerHand.IsNatural21() && dealerHand.IsNatural21())
+            {
+                return Outcome.Push;
+            }
 
-        //natural 21 (only two cards), beats all hands (with more than 2 cards)
-        if (playerHand.IsNatural21())
-        {
-            return Outcome.BlackJack;
-        }
+            //natural 21 (only two cards), beats all hands (with more than 2 cards)
+            if (playerHand.IsNatural21())
+            {
+                return Outcome.BlackJack;
+            }
 
-        if (dealerHand.IsNatural21())
-        {
-            return Outcome.Lose;
+            if (dealerHand.IsNatural21())
+            {
+                return Outcome.Lose;
+            }
         }
 
         if (dealerHand.IsBust())
@@ -188,7 +194,6 @@ public class Round
         }
         _ui.NewLine();
 
-        // Need to be tested with try-catch
         _storage.Save(results);
     }
 }
