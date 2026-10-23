@@ -75,8 +75,8 @@ public class Shoe
     private void InsertCutCard()
     {
         int index = _random.Next(
-            _cards.Count - _minCutCard * _cards.Count / 100,
-            _cards.Count - _maxCutCard * _cards.Count / 100);
+            _cards.Count - _maxCutCard * _cards.Count / 100,
+            _cards.Count - _minCutCard * _cards.Count / 100);
         _cards.Insert(index, new(Suit.CutCard, 0));
     }
 

@@ -1,17 +1,19 @@
 ﻿public class Game
 {
-    private const int _numberOfDecks = 6;
-    private const int _minCutCard = 234;
-    private const int _maxCutCard = 312;
     private List<Player> _players = new List<Player>();
-    private GameStorage _storage = new GameStorage();
     private ConsoleUi _ui = new ConsoleUi();
+    private GameStorage _storage;
 
     // set by ChooseHouseRules() before every new game
     // "null", they will get a value before they are used
     private HouseRules _rules = null!;
     private Dealer _dealer = null!;
     private Shoe _shoe = null!;
+
+    public Game()
+    {
+        _storage = new(_ui);
+    }
 
     public void Run()
     {
@@ -122,7 +124,7 @@
         if (_shoe.IsTimeToShuffle)
         {
             _ui.ShowMessage($"Hittade skiljekortet. Blandar skon.");
-            _shoe = new(_numberOfDecks, _minCutCard, _maxCutCard);
+            _shoe = new(_rules.NumberOfDecks, _rules.MinCutCard, _rules.MaxCutCard);
             CardCounter.Reset();
         }
 

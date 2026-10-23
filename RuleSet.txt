@@ -8,7 +8,7 @@ N21WinRules=N21
 -Houserule_1
 HitRules=H17
 DeckRules=6
-PenetrationRules=47to78
+PenetrationRules=10to25
 N21WinRules=21
 
 -Houserule_2

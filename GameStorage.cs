@@ -79,11 +79,11 @@
         }
 
         List<string> output = new List<string>
-    {
-        "STATISTIK",
-        $"{ "Spelare",-15} { "Vinster",8} { "Förluster",10} { "Push",6} { "Blackjack",10} { "Rundor",7}",
-        new string('-', 62)
-    };
+        {
+            "STATISTIK",
+            $"{ "Spelare",-15} { "Vinster",8} { "Förluster",10} { "Push",6} { "Blackjack",10} { "Rundor",7}",
+            new string('-', 62)
+        };
 
         foreach (var player in stats)
         {

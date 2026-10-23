@@ -5,7 +5,7 @@ static class CardCounter
     // Returns the running count divided by the number of remaining decks.
     public static int TrueCount(int remainingDecks)
     {
-        return RunningCount / remainingDecks;
+        return remainingDecks > 0 ? RunningCount / remainingDecks : RunningCount;
     }
 
     // 2 - 6 count as low, 10 - Ace count as hi.

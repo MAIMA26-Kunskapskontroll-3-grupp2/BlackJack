@@ -161,15 +161,15 @@ public class ConsoleUi
         Console.WriteLine($"Löpande räkning: {CardCounter.RunningCount}");
         Console.Write($"Sann räkning: {trueCount} ");
 
-        if (trueCount < 0)
+        if (trueCount > 0)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(new string('☀', -trueCount));
+            Console.WriteLine(new string('☀', trueCount));
         }
-        else if (trueCount > 0)
+        else if (trueCount < 0)
         {
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine(new string('☁', trueCount));
+            Console.WriteLine(new string('☁', -trueCount));
         }
         else
             Console.WriteLine();
@@ -335,22 +335,5 @@ public class ConsoleUi
             case Suit.Spades: return "♠";
         }
         return "?";
-    }
-
-    // Prints the symbol for the suit in appropriate color.
-    private void ShowCard(Card card)
-    {
-        Console.ForegroundColor = card.Suit is Suit.Diamonds or Suit.Hearts
-        ? ConsoleColor.Red : ConsoleColor.White;
-
-        Console.Write(GetSuitSymbol(card.Suit));
-        Console.Write($"{GetRankSymbol(card.Rank)} ");
-        Console.ResetColor();
-    }
-
-    // Prints the backside of the dealers hidden card.
-    private void ShowHiddenCard()
-    {
-        Console.Write("▒▒ ");
     }
 }
