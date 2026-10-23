@@ -286,7 +286,7 @@ public class HouseRules
         string cutCard = $"{MinCutCard} cards";
         if (MinCutCard != MaxCutCard)
         {
-            cutCard = $"{MinCutCard} to {MaxCutCard} cards";
+            cutCard = $"{MinCutCard}% to {MaxCutCard}% from the end of the shoe";
         }
 
         string winRule = "All 21 are worth the same (21)";

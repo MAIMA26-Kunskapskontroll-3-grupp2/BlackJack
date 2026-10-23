@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Shopping": {
+      "commandName": "Project",
+      "workingDirectory": "$(ProjectDir)"
+    }
+  }
+}

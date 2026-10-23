@@ -1,6 +1,6 @@
 public class Round
 {
-    private Deck _deck;
+    private Shoe _shoe;
     private Dealer _dealer;
     private List<Player> _players;
     private ConsoleUi _ui;
@@ -8,15 +8,16 @@ public class Round
     private HouseRules _rules;
 
 
-    public Round(Deck deck, Dealer dealer, List<Player> players, ConsoleUi ui, GameStorage storage, HouseRules rules)
+    public Round(Shoe shoe, Dealer dealer, List<Player> players, ConsoleUi ui, GameStorage storage, HouseRules rules)
     {
-        _deck = deck;
+        _shoe = shoe;
         _dealer = dealer;
         _players = players;
         _ui = ui;
         _storage = storage;
         _rules = rules;
     }
+
 
     // Deal the starting cards according to the rules
     public void InitialDeal()
@@ -31,12 +32,16 @@ public class Round
         // (Players get two open cards, Dealer gets one open and one hidden hole card)
         foreach (Player player in _players)
         {
-            player.AddCard(_deck.DealCard());
-            player.AddCard(_deck.DealCard());
+            // Count all visible cards.
+            player.AddCard(CardCounter.CountCard(_shoe.DealCard()));
+            player.AddCard(CardCounter.CountCard(_shoe.DealCard()));
         }
 
-        _dealer.AddCard(_deck.DealCard());
-        _dealer.AddCard(_deck.DealCard());
+        // Count all visible cards.
+        _dealer.AddCard(CardCounter.CountCard(_shoe.DealCard()));
+
+        // Don't count the hole card until it's turned.
+        _dealer.AddCard(_shoe.DealCard());
     }
 
     public void PlayPlayersTurns()
@@ -48,6 +53,8 @@ public class Round
 
             while (playerTurnActive)
             {
+                _ui.ShowCardCount(_shoe.RemainingDecks());
+
                 // Show the players' current cards on the screen
                 // One of the dealer's card is still hidden, therefore the argument is false
                 _ui.ShowHands(_dealer, _players, false);
@@ -57,12 +64,13 @@ public class Round
 
                 if (choice == Move.Hit)
                 {
-                    // Player gets another card
-                    player.AddCard(_deck.DealCard());
+                    // Player gets another card and it's counted.
+                    player.AddCard(CardCounter.CountCard(_shoe.DealCard()));
 
                     // Check if you're busted
                     if (player.Hand.IsBust())
                     {
+                        _ui.ShowCardCount(_shoe.RemainingDecks());
                         _ui.ShowHands(_dealer, _players, false);
                         // Display 'you're busted' message
                         _ui.ShowBustMessage(player);
@@ -82,10 +90,16 @@ public class Round
     public void PlayDealerTurn()
     {
         _ui.ShowMessage("Givaren vänder hålkortet.");
+
+        // Now that the hole card is turned, we can count it.
+        CardCounter.CountCard(_dealer.Hand.Cards[1]);
+
         while (_dealer.ShouldHit())
         {
-            _dealer.AddCard(_deck.DealCard());
+            _dealer.AddCard(CardCounter.CountCard(_shoe.DealCard()));
         }
+
+        _ui.ShowCardCount(_shoe.RemainingDecks());
 
         //Show all cards, including the dealer's hoel card
         _ui.ShowHands(_dealer, _players, true);
@@ -100,11 +114,8 @@ public class Round
     {
         var results = new Dictionary<Player, Outcome>();
 
-        //int dealerValue = _dealer.Hand.CalculateValue();
-
         foreach (var player in _players)
         {
-            //int playerValue = player.Hand.CalculateValue();
             results[player] = GetOutcome(player);
         }
         return results;

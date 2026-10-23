@@ -1,4 +1,4 @@
-public enum Suit { Hearts, Diamonds, Clubs, Spades }
+public enum Suit { Hearts, Diamonds, Clubs, Spades, CutCard }
 
 // Set Two = 2 so the enum starts at 2 instead of 0
 // Which will make it easier to calculate the hand's total value later
