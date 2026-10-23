@@ -308,32 +308,4 @@ public class ConsoleUi
             Console.WriteLine();
         }
     }
-    // Gets the symbol to print for the rank.
-    private string GetRankSymbol(Rank rank)
-    {
-        if (rank <= Rank.Ten)
-            return ((int)rank).ToString();
-
-        switch (rank)
-        {
-            case Rank.Jack: return "J";
-            case Rank.Queen: return "Q";
-            case Rank.King: return "K";
-            case Rank.Ace: return "A";
-        }
-        return "?";
-    }
-
-    // Gets the symbol to print for the suit.
-    private string GetSuitSymbol(Suit suit)
-    {
-        switch (suit)
-        {
-            case Suit.Hearts: return "♥";
-            case Suit.Diamonds: return "♦";
-            case Suit.Clubs: return "♣";
-            case Suit.Spades: return "♠";
-        }
-        return "?";
-    }
 }
