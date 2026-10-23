@@ -2,4 +2,3 @@ bin/
 obj/
 .DS_Store/
 results.txt
-players.txt
