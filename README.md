@@ -48,9 +48,10 @@ The project followed the Agile/Scrum setup. Due to the fast-pace, time-limit 7 d
 **Note:** For specific information of detailed contributions, please refer to Author specific git commits/Pull requests (PR). Authors followed the process to review other authors PR. When changes were deemed necessary, reviewers requested the PR author to make the corrections - in most cases, except for some isolated cases where a reviewer made the changes themself and the PR with the dev-branch.
 
 **Contributions to User stories**\
-TT: Add here\
-GH: Add here\
-AH: 8, 9, 10, 11, 12, 22 
+TT: 15 Add more here\
+GH: 15 Add more here\
+AH: 8, 9, 10, 11, 12, 15, 22\
+AD: 2, 8, 15, 
 
 User stories:
 1. As a player, I want to receive two open cards at the start of the round so that I can begin playing.  “Varje spelare får två kort, öppet.”
@@ -81,7 +82,7 @@ User stories:
 
 
 ## Acknowledgement
-We acknowledge Ai Doan for her initial contributions to the project. We have also, to the best of our joined knowledge, specified her contributions to the user-stories
+We acknowledge Ai Doan for her initial contributions to the project. We have also, to the best of our combined knowledge, specified Ai's contributions to the user-stories
 
 ## Author notes 1: Deviations from any specifications
 To our knowledge, we did not deviate from any specifications. All functionalities should be there according to the specifications in: https://mai26ma-ha.lms.nodehill.se/uploads/documents/2026-09-23T19-55-46/MAI26-kunskapskontroll-3-tjugoett.pdf
