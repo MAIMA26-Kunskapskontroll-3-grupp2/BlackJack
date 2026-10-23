@@ -42,8 +42,6 @@ public class Round
 
         // Don't count the hole card until it's turned.
         _dealer.AddCard(_shoe.DealCard());
-
-        //_ui.ShowHands(_dealer, _players, false); redundant code
     }
 
     public void PlayPlayersTurns()
@@ -116,11 +114,8 @@ public class Round
     {
         var results = new Dictionary<Player, Outcome>();
 
-        //int dealerValue = _dealer.Hand.CalculateValue();
-
         foreach (var player in _players)
         {
-            //int playerValue = player.Hand.CalculateValue();
             results[player] = GetOutcome(player);
         }
         return results;

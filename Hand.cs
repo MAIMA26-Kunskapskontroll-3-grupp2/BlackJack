@@ -48,6 +48,7 @@ public class Hand
     {
         return CalculateValue() > 21;
     }
+
     // Check if an ace is hard or soft
     public bool IsSoft()
     {
@@ -91,8 +92,8 @@ public class Hand
         }
     }
 
-// Check if the player got exactly 21 points on their first two cards
-public bool IsNatural21()
+    // Check if the player got exactly 21 points on their first two cards
+    public bool IsNatural21()
     {
         return Cards.Count == 2 && CalculateValue() == 21;
     }

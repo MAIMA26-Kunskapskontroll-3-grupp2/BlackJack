@@ -93,7 +93,7 @@ public class ConsoleUi
             Console.WriteLine("Ogiltigt val.");
         }
     }
-    
+
     // Show a message and get a reply to it.
     public string? GetString(string message)
     {
@@ -142,7 +142,7 @@ public class ConsoleUi
         Console.WriteLine(message);
         Console.ResetColor();
     }
-    
+
     // Show the current cards of the players and the dealer
     public void ShowHands(Dealer dealer, List<Player> players, bool revealDealer)
     {
@@ -158,12 +158,23 @@ public class ConsoleUi
     public void ShowCardCount(int remainingDecks)
     {
         int trueCount = CardCounter.TrueCount(remainingDecks);
-        Console.WriteLine($"Running count: {CardCounter.RunningCount}");
-        Console.WriteLine($"True count: {trueCount}.");
+        Console.WriteLine($"Löpande räkning: {CardCounter.RunningCount}");
+        Console.Write($"Sann räkning: {trueCount} ");
+
         if (trueCount < 0)
-            Console.WriteLine("Det ser ljust ut!");
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(new string('☀', -trueCount));
+        }
         else if (trueCount > 0)
-            Console.WriteLine("Det ser mörkt ut.");
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine(new string('☁', trueCount));
+        }
+        else
+            Console.WriteLine();
+
+        Console.ResetColor();
     }
 
     // Ask the player if they want to hit or stand
