@@ -1,6 +1,4 @@
 # Title: Tjugoett (Blackjack) - Kunskapskontroll 3 - Group Report
-
-
 #### **Creators:**
 * Tomas Törnkvist (TT), Github: tomastornkvist
 * Gantiana Haliti (GH), Github: Gentianahaliti
@@ -10,7 +8,6 @@
 #### **Program:**       MAI26MA
 #### **Course:**        Module II - Programmering och objektorienterad utveckling i C-sharp
 #### **Assignment:**    Kunskapskontroll 3 - Tjugoett (Blackjack)
-
 #### **Description:**   Single or multiplayer computer game that follow international Blackjack rules
 
 ## Description

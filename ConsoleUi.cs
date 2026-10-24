@@ -68,6 +68,32 @@ public class ConsoleUi
         Console.WriteLine();
     }
 
+    // Show the house rules menu and get a reply.
+    public int RuleSetMenu(string[] ruleSetNames)
+    {
+        while (true)
+        {
+            Console.WriteLine();
+            for (int i = 0; i < ruleSetNames.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}. {ruleSetNames[i]}");
+            }
+            Console.Write("Vilka husregler vill ni spela med: ");
+
+            string? input = Console.ReadLine();
+            if (input != null)
+            {
+                if (int.TryParse(input, out int i))
+                {
+                    i--;
+                    if (i >= 0 && i < ruleSetNames.Length)
+                        return i;
+                }
+            }
+            Console.WriteLine("Ogiltigt val.");
+        }
+    }
+
     // Show a message and get a reply to it.
     public string? GetString(string message)
     {
@@ -109,6 +135,14 @@ public class ConsoleUi
         Console.WriteLine();
     }
 
+    // Show an error message
+    public void ShowErrorMessage(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+
     // Show the current cards of the players and the dealer
     public void ShowHands(Dealer dealer, List<Player> players, bool revealDealer)
     {
@@ -119,6 +153,28 @@ public class ConsoleUi
 
         ShowDealerHand(dealer, revealDealer);
         Console.WriteLine();
+    }
+
+    public void ShowCardCount(double remainingDecks)
+    {
+        double trueCount = CardCounter.TrueCount(remainingDecks);
+        Console.WriteLine($"Löpande räkning: {CardCounter.RunningCount}");
+        Console.Write($"Sann räkning: {trueCount:F2} ");
+
+        if (trueCount > 0)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(new string('☀', (int)trueCount));
+        }
+        else if (trueCount < 0)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine(new string('☁', (int)-trueCount));
+        }
+        else
+            Console.WriteLine();
+
+        Console.ResetColor();
     }
 
     // Ask the player if they want to hit or stand
@@ -251,50 +307,5 @@ public class ConsoleUi
 
             Console.WriteLine();
         }
-    }
-    // Gets the symbol to print for the rank.
-    private string GetRankSymbol(Rank rank)
-    {
-        if (rank <= Rank.Ten)
-            return ((int)rank).ToString();
-
-        switch (rank)
-        {
-            case Rank.Jack: return "J";
-            case Rank.Queen: return "Q";
-            case Rank.King: return "K";
-            case Rank.Ace: return "A";
-        }
-        return "?";
-    }
-
-    // Gets the symbol to print for the suit.
-    private string GetSuitSymbol(Suit suit)
-    {
-        switch (suit)
-        {
-            case Suit.Hearts: return "♥";
-            case Suit.Diamonds: return "♦";
-            case Suit.Clubs: return "♣";
-            case Suit.Spades: return "♠";
-        }
-        return "?";
-    }
-
-    // Prints the symbol for the suit in appropriate color.
-    private void ShowCard(Card card)
-    {
-        Console.ForegroundColor = card.Suit is Suit.Diamonds or Suit.Hearts
-        ? ConsoleColor.Red : ConsoleColor.White;
-
-        Console.Write(GetSuitSymbol(card.Suit));
-        Console.Write($"{GetRankSymbol(card.Rank)} ");
-        Console.ResetColor();
-    }
-
-    // Prints the backside of the dealers hidden card.
-    private void ShowHiddenCard()
-    {
-        Console.Write("▒▒ ");
     }
 }

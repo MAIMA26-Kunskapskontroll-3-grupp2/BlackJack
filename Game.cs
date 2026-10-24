@@ -1,26 +1,25 @@
-public class Game
+﻿public class Game
 {
     private List<Player> _players = new List<Player>();
-    private Dealer _dealer = new Dealer();
-    private Deck _deck = new Deck();
-    private GameStorage _storage = new GameStorage();
     private ConsoleUi _ui = new ConsoleUi();
+    private GameStorage _storage;
+
+    // set by ChooseHouseRules() before every new game
+    // "null", they will get a value before they are used
+    private HouseRules _rules = null!;
+    private Dealer _dealer = null!;
+    private Shoe _shoe = null!;
+
+    public Game()
+    {
+        _storage = new(_ui);
+    }
 
     public void Run()
     {
-        // Läs in tidigare sparade resultat.
-        string[] savedResults = _storage.Load();
-
-        foreach (string line in savedResults.TakeWhile(line => line.Trim() != "STATISTIK"))
-        {
-            if (!_storage.Validate(line))
-            {
-                _ui.ShowMessage("Felaktigt format i results.txt.");
-                return;
-            }
-        }
-
+        _storage.Load();
         _players = _storage.LoadPlayers();
+
         // Start MainMenu()
         while (true)
         {
@@ -66,6 +65,10 @@ public class Game
             return;
         }
 
+        ChooseHouseRules();
+        _dealer = new Dealer(_rules);
+        _shoe = CreateShoe();
+
         bool keepPlaying = true;
 
         while (keepPlaying)
@@ -93,16 +96,39 @@ public class Game
         }
     }
 
-    private void PlayRound()
+    // Let the players choose which house rules to play with
+    private void ChooseHouseRules()
     {
-        // Check the deck, create a Round object and execute the round's phases
-        if (_deck.CardsLeft() <= 15)
+        List<string> ruleSetNames = HouseRules.GetRuleSetNames();
+
+        // If the rule file is missing or empty, HouseRules uses the standard rules
+        if (ruleSetNames.Count == 0)
         {
-            _ui.ShowMessage($"Det finns bara {_deck.CardsLeft()} kort kvar i leken. Blandar kortleken.");
-            _deck = new();
+            _rules = new HouseRules();
+            return;
         }
 
-        Round round = new Round(_deck, _dealer, _players, _ui, _storage);
+        int index = _ui.RuleSetMenu(ruleSetNames.ToArray());
+        _rules = new HouseRules(ruleSetNames[index]);
+    }
+
+    // Create a new shuffled shoe with the number of decks and cut card from the house rules
+    private Shoe CreateShoe()
+    {
+        return new Shoe(_rules.NumberOfDecks, _rules.MinCutCard, _rules.MaxCutCard);
+    }
+
+    private void PlayRound()
+    {
+        // Check the shoe, create a Round object and execute the round's phases
+        if (_shoe.IsTimeToShuffle)
+        {
+            _ui.ShowMessage($"Hittade skiljekortet. Blandar skon.");
+            _shoe = new(_rules.NumberOfDecks, _rules.MinCutCard, _rules.MaxCutCard);
+            CardCounter.Reset();
+        }
+
+        Round round = new Round(_shoe, _dealer, _players, _ui, _storage, _rules);
         round.InitialDeal();
         round.PlayPlayersTurns();
         round.PlayDealerTurn();
@@ -117,11 +143,12 @@ public class Game
             return;
         }
 
-        string? name = _ui.GetString($"Ange spelarens namn: ");
+        string? name = _ui.GetString("Ange spelarens namn: ");
 
         if (name != null)
         {
-            _players.Add(new(name));
+            _players.Add(new Player(name));
+            _storage.SavePlayers(_players);
         }
         else
         {
@@ -129,7 +156,9 @@ public class Game
         }
 
         ShowPlayers();
+
     }
+
 
     private void RemovePlayer()
     {
@@ -149,6 +178,7 @@ public class Game
 
 
         _players.RemoveAt(index);
+        _storage.SavePlayers(_players);
         ShowPlayers();
 
     }

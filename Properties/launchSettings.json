@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BlackJack": {
+      "commandName": "Project",
+      "workingDirectory": "$(ProjectDir)"
+    }
+  }
+}
