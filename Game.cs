@@ -1,14 +1,19 @@
 ﻿public class Game
 {
     private List<Player> _players = new List<Player>();
-    private GameStorage _storage = new GameStorage();
     private ConsoleUi _ui = new ConsoleUi();
+    private GameStorage _storage;
 
     // set by ChooseHouseRules() before every new game
     // "null", they will get a value before they are used
     private HouseRules _rules = null!;
     private Dealer _dealer = null!;
-    private Deck _deck = null!;
+    private Shoe _shoe = null!;
+
+    public Game()
+    {
+        _storage = new(_ui);
+    }
 
     public void Run()
     {
@@ -62,7 +67,7 @@
 
         ChooseHouseRules();
         _dealer = new Dealer(_rules);
-        _deck = CreateShoe();
+        _shoe = CreateShoe();
 
         bool keepPlaying = true;
 
@@ -108,21 +113,22 @@
     }
 
     // Create a new shuffled shoe with the number of decks and cut card from the house rules
-    private Deck CreateShoe()
+    private Shoe CreateShoe()
     {
-        return new Deck(_rules.NumberOfDecks, _rules.MinCutCard, _rules.MaxCutCard);
+        return new Shoe(_rules.NumberOfDecks, _rules.MinCutCard, _rules.MaxCutCard);
     }
 
     private void PlayRound()
     {
-        // Check the deck, create a Round object and execute the round's phases
-        if (_deck.NeedsReshuffle())
+        // Check the shoe, create a Round object and execute the round's phases
+        if (_shoe.IsTimeToShuffle)
         {
-            _ui.ShowMessage($"Det finns bara {_deck.CardsLeft()} kort kvar i leken. Blandar kortleken.");
-            _deck = CreateShoe();
+            _ui.ShowMessage($"Hittade skiljekortet. Blandar skon.");
+            _shoe = new(_rules.NumberOfDecks, _rules.MinCutCard, _rules.MaxCutCard);
+            CardCounter.Reset();
         }
 
-        Round round = new Round(_deck, _dealer, _players, _ui, _storage, _rules);
+        Round round = new Round(_shoe, _dealer, _players, _ui, _storage, _rules);
         round.InitialDeal();
         round.PlayPlayersTurns();
         round.PlayDealerTurn();

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-public class GameStorage
+﻿public class GameStorage
 {
     private string path;
+    private ConsoleUi _ui;
 
-    public GameStorage(string path = "results.txt")
+    public GameStorage(ConsoleUi ui, string path = "results.txt")
     {
+        _ui = ui;
         this.path = path;
     }
 
@@ -81,11 +79,11 @@ public class GameStorage
         }
 
         List<string> output = new List<string>
-    {
-        "STATISTIK",
-        $"{ "Spelare",-15} { "Vinster",8} { "Förluster",10} { "Push",6} { "Blackjack",10} { "Rundor",7}",
-        new string('-', 62)
-    };
+        {
+            "STATISTIK",
+            $"{ "Spelare",-15} { "Vinster",8} { "Förluster",10} { "Push",6} { "Blackjack",10} { "Rundor",7}",
+            new string('-', 62)
+        };
 
         foreach (var player in stats)
         {
@@ -100,11 +98,11 @@ public class GameStorage
         }
         catch (IOException)
         {
-            Console.WriteLine("Kunde inte spara statistiken.");
+            _ui.ShowMessage("Kunde inte spara statistiken.");
         }
         catch (UnauthorizedAccessException)
         {
-            Console.WriteLine("Du saknar behörighet att spara statistiken.");
+            _ui.ShowMessage("Du saknar behörighet att spara statistiken.");
         }
     }
 
@@ -121,11 +119,11 @@ public class GameStorage
         }
         catch (IOException)
         {
-            Console.WriteLine("Kunde inte läsa spelfilen.");
+            _ui.ShowMessage("Kunde inte läsa spelfilen.");
         }
         catch (UnauthorizedAccessException)
         {
-            Console.WriteLine("Du har inte behörighet att läsa spelfilen.");
+            _ui.ShowMessage("Du har inte behörighet att läsa spelfilen.");
         }
 
         return Array.Empty<string>();
@@ -164,11 +162,11 @@ public class GameStorage
         }
         catch (IOException)
         {
-            Console.WriteLine("Kunde inte läsa spelarfilerna.");
+            _ui.ShowMessage("Kunde inte läsa spelarfilerna.");
         }
         catch (UnauthorizedAccessException)
         {
-            Console.WriteLine("Du saknar behörighet att läsa spelarfilerna.");
+            _ui.ShowMessage("Du saknar behörighet att läsa spelarfilerna.");
         }
 
         return players;
@@ -182,11 +180,11 @@ public class GameStorage
         }
         catch (IOException)
         {
-            Console.WriteLine("Kunde inte spara spelarna.");
+            _ui.ShowMessage("Kunde inte spara spelarna.");
         }
         catch (UnauthorizedAccessException)
         {
-            Console.WriteLine("Du saknar behörighet att spara spelarna.");
+            _ui.ShowMessage("Du saknar behörighet att spara spelarna.");
         }
     }
 

@@ -14,6 +14,7 @@ public class Hand
     {
         _cards.Clear();
     }
+
     // Calculate the sum value and handle soft/hard aces
     public int CalculateValue()
     {
@@ -22,31 +23,15 @@ public class Hand
 
         foreach (Card card in _cards)
         {
-            switch (card.Rank)
+            if (card.Rank == Rank.Ace)
             {
-                case Rank.Two:
-                case Rank.Three:
-                case Rank.Four:
-                case Rank.Five:
-                case Rank.Six:
-                case Rank.Seven:
-                case Rank.Eight:
-                case Rank.Nine:
-                case Rank.Ten:
-                    score += (int)card.Rank;
-                    break;
-
-                case Rank.Jack:
-                case Rank.Queen:
-                case Rank.King:
-                    score += 10;
-                    break;
-
-                case Rank.Ace:
-                    score += 11;
-                    aces++;
-                    break;
+                score += 11;
+                aces++;
             }
+            else if (card.Rank < Rank.Jack)
+                score += (int)card.Rank;
+            else
+                score += 10;
         }
 
         while (aces > 0 && score > 21)
@@ -59,11 +44,11 @@ public class Hand
     }
 
     // Check if the hand's total value is over 21
-    // Check if the hand's total value is over 21
     public bool IsBust()
     {
         return CalculateValue() > 21;
     }
+
     // Check if an ace is hard or soft
     public bool IsSoft()
     {
@@ -107,8 +92,8 @@ public class Hand
         }
     }
 
-// Check if the player got exactly 21 points on their first two cards
-public bool IsNatural21()
+    // Check if the player got exactly 21 points on their first two cards
+    public bool IsNatural21()
     {
         return Cards.Count == 2 && CalculateValue() == 21;
     }
