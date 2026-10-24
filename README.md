@@ -51,7 +51,7 @@ The project followed the Agile/Scrum setup. Due to the fast-pace, time-limit 7 d
 TT: 15 Add more here\
 GH: 5, 6, 7, 15, 16, 17, 18, 19, 20\
 AH: 8, 9, 10, 11, 12, 15, 22\
-AD: 2, 8, 15, 
+AD: 2, 4 , 8, 15\
 
 User stories:
 1. As a player, I want to receive two open cards at the start of the round so that I can begin playing.  “Varje spelare får två kort, öppet.”
