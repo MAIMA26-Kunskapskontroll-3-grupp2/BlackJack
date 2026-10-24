@@ -49,7 +49,7 @@ The project followed the Agile/Scrum setup. Due to the fast-pace, time-limit 7 d
 
 **Contributions to User stories**\
 TT: 15 Add more here\
-GH: 15 Add more here\
+GH: 5, 6, 7, 15, 16, 17, 18, 19, 20\
 AH: 8, 9, 10, 11, 12, 15, 22\
 AD: 2, 8, 15, 
 
