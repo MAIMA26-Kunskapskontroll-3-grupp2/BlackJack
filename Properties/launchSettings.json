@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Shopping": {
+    "BlackJack": {
       "commandName": "Project",
       "workingDirectory": "$(ProjectDir)"
     }

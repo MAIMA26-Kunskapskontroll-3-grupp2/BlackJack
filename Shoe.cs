@@ -105,8 +105,8 @@ public class Shoe
         return card;
     }
 
-    public int RemainingDecks()
+    public double RemainingDecks()
     {
-        return _cards.Count / 52;
+        return _cards.Count / 52.0;
     }
 }

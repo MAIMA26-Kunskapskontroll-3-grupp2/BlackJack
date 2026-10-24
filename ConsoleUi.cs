@@ -155,21 +155,21 @@ public class ConsoleUi
         Console.WriteLine();
     }
 
-    public void ShowCardCount(int remainingDecks)
+    public void ShowCardCount(double remainingDecks)
     {
-        int trueCount = CardCounter.TrueCount(remainingDecks);
+        double trueCount = CardCounter.TrueCount(remainingDecks);
         Console.WriteLine($"Löpande räkning: {CardCounter.RunningCount}");
-        Console.Write($"Sann räkning: {trueCount} ");
+        Console.Write($"Sann räkning: {trueCount:F2} ");
 
         if (trueCount > 0)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(new string('☀', trueCount));
+            Console.WriteLine(new string('☀', (int)trueCount));
         }
         else if (trueCount < 0)
         {
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.WriteLine(new string('☁', -trueCount));
+            Console.WriteLine(new string('☁', (int)-trueCount));
         }
         else
             Console.WriteLine();
