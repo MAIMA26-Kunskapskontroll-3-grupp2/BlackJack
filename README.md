@@ -3,31 +3,31 @@
 
 #### **Creator:**       Tomas Törnkvist (TT), Gantiana Haliti (GH), Arne Hagman (AH), **"Ai Doan (AD)"
 ** question to be decided by the group: Add Ai Doan here as an author, or in Acknowledgement?"
-#### **Date:**          22Oct2026
+#### **Date:**          22 Oct 2026
 #### **Program:**       MAI26MA
 #### **Course:**        Module II - Programmering och objektorienterad utveckling i C-sharp
 #### **Assignment:**    Kunskapskontroll 3 - Tjugoett (Blackjack)
 
-#### **Description:**   Single or multiplayer computer game that follow internation Blackjack rules
+#### **Description:**   Single or multiplayer computer game that follow international Blackjack rules
 
 ## Description
 
 **Goal:**
-Card game against the computer (dealer) to try achieve the total value of 21, or to be as close to it as possible, without exceeding it. 
+Card game against the computer (dealer) to try to achieve the total value of 21, or to be as close to it as possible, without exceeding it.
 
 **Program components:**\
-**Menu.** Upon starting the computer program, the player will see a menu where the player(s) can choose to: (I) Lägg till spelare/add new player (II) Ta bort spelare/remove a player (III) Visa Spelarstatistik/show historical player statistics (IV) Börja spela/start a new game, and (V) Avsluta spelet/Exit game. When option (IV) is chosen, a submenu will appear on the console. Here the player(s) will be ablet to chose the different settings (house-rules) for the game. Two common house-rules that are used in the casino have been added as a full set of preset options to be choosen at the convenience of a player. These are options 1 and 2. After chosing a pre-set of rules, the game will start. Note: The player(s) might have to add, or remove playername before starting a game.
+**Menu.** Upon starting the computer program, the player will see a menu where the player(s) can choose to: (I) Lägg till spelare/add new player (II) Ta bort spelare/remove a player (III) Visa Spelarstatistik/show historical player statistics (IV) Börja spela/start a new game, and (V) Avsluta spelet/Exit game. When option (IV) is chosen, a submenu will appear on the console. Here the player(s) will be able to chose the different settings (house-rules) for the game. Two common house-rules that are used in the casino have been added as a full set of preset options to be chosen at the convenience of a player. These are options 1 and 2. After chosing a pre-set of rules, the game will start. Note: The player(s) might have to add themselves as players before starting a game.
 
-**Game.** One game is divided in two rounds, the initial first round, and the second round. In the first round, all players will start with 2 open cards, and the dealer starts with an open, and a closed (hole) card. The player(s) will see open cards and makes a decision on how to proceed. The second round starts with player(s) turn. This is when active player choices are made. Each player(s) can choose to hit (add one more open card) or stand (stop) with current cards when they are satisfied. The player(s) will end their turn(s), one-by-one, and one after another (for more than one player). In the end, the player(s) will eventually decide to stand, or get busted (exceed 21) on which the player(s) automatically loose the current game. 
+**Game.** One game is divided in two rounds, the initial first round, and the second round. In the first round, all players will start with 2 open cards, and the dealer starts with an open, and a closed (hole) card. The player(s) will see open cards and make a decision on how to proceed. The second round starts with players turn(s). This is when active player choices are made. Each player can choose to hit (add one more open card) or stand (stop) with current cards when they are satisfied. In the end, the player(s) will eventually decide to stand, or get busted (exceed 21) on which the player(s) automatically lose the current game.
 
-The second round ends with the dealer turn(s). The dealer will reweal his hole card, and either hit or stand (by adhering to the House-rules as specified below). The dealer has to follow the house-rules strictly, and does not take any decisions outside the rules. The second round ends when the dealer either stand, or get busted. 
+The second round ends with the dealer's turn. The dealer will reveal his hole card, and either hit or stand (by adhering to the House-rules as specified below). The dealer has to follow the house-rules strictly, and does not take any decisions outside the rules. The second round ends when the dealer either stand, or get busted.
 
-In the final phase of the game, all outcomes (player(s) vs dealer) will be compared. In short - all outcomes (whether its a win or loose) will depend on the house-rules. These rules are summarized below as hard-coded or dynamic ones. Based on the rules, the winner(s) will be decided and the results will be printed. The player(s) can choose to play again (a new round will be initiated), or to quit and return to the main menu. When exiting a game, the most current player(s) list will be stored, and reused to initiate a new game. Any stored historical player-track record will be updated and saved. 
+In the final phase of the game, all outcomes (player(s) vs dealer) will be compared. In short - all outcomes (whether its a win or lose) will depend on the house-rules. These rules are summarized below as hard-coded or dynamic ones. Based on the rules, the winner(s) will be decided and the results will be printed. The player(s) can choose to play again (a new round will be initiated), or to quit and return to the main menu. When exiting a game, the most current player(s) list will be stored, and reused to initiate a new game. Any stored historical player-track record will be updated and saved.
 
 **House-rules**\
 Hardcoded:
 
-1) Ace is worth 1 (hard hand) or 11 (soft hand). The default value is 11, but only if the total sum of all cards would exceed 21, the value will be 1 
+1) Ace is worth 1 (hard hand) or 11 (soft hand). The default value is 11, but if the total sum of all cards would exceed 21, the value will be 1
 2) Suit cards are worth 10 points
 3) All other cards 2-10 are worth their corresponding values
 4) Natural Blackjack (Ace + Suit, or 11 + 10) is the highest achievable hand
@@ -36,7 +36,7 @@ Hardcoded:
 Dynamic:
 
 5) Dealer rule: i.e. always stand on soft 17, or hard 17
-6) Deck size rule: i.e. A shoe (container of cards) can consist of 1 or more decks, up to 8 
+6) Deck size rule: i.e. A shoe (container of cards) can consist of 1 or more decks, up to 8
 7) Playable cards in game: i.e. A Cut-card divides the cards into a percentage of playable, and non-playable cards. Thus, its main function is to prevent the shoe from running out of cards and in the middle of a game. It also act as means to regulate or prevent counting cards. This percentage will vary depending on the strictness level
 8) Win conditions: If Blackjack always wins, or i.e. draw against 21 with more than 2 cards - depends on the house-rules
 
@@ -48,6 +48,9 @@ The project followed the Agile/Scrum setup. Due to the fast-pace, time-limit 7 d
 **Note:** For specific information of detailed contributions, please refer to Author specific git commits/Pull requests (PR). Authors followed the process to review other authors PR. When changes were deemed necessary, reviewers requested the PR author to make the corrections - in most cases, except for some isolated cases where a reviewer made the changes themself and the PR with the dev-branch.
 
 **Contributions to User stories**\
+TT: Add here\
+GH: Add here\
+AH: 8, 9, 10, 11, 12, 22
 TT: 15 Add more here\
 GH: 5, 6, 7, 15, 16, 17, 18, 19, 20\
 AH: 8, 9, 10, 11, 12, 15, 22\
