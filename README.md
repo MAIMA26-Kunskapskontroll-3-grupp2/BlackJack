@@ -2,8 +2,11 @@
 #### **Creators:**
 * Tomas Törnkvist (TT), Github: tomastornkvist
 * Gantiana Haliti (GH), Github: Gentianahaliti
-* Arne Hagman (AH), Github: nhagman-creator & Unknown
+* Arne Hagman (AH), Github: nhagman-creator & Unknown**
 * Ai Doan (AD), Github: Chiminii (Left the programme about half way through the assignment)
+
+**Note: nhagman created the original project folder in git-hub. Due to not being able to pull to that folder, a new project folder was created to pull to, and push from. All commits after that resulted in "Unknown". As a reviewer of PR, the name nhagman is correctly displayed in github.
+
 #### **Date:**          22 Oct 2026
 #### **Program:**       MAI26MA
 #### **Course:**        Module II - Programmering och objektorienterad utveckling i C-sharp
