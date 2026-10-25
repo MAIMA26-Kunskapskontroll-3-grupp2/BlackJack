@@ -15,6 +15,18 @@
 **Goal:**
 Card game against the computer (dealer) to try to achieve the total value of 21, or to be as close to it as possible, without exceeding it.
 
+**Starting the program from VS Code:**\
+1. Install .NET SDK in VS Code
+2. Open a terminal in the project folder where Kunskapskontroll 3.csproj is located
+3. Run the command `dotnet run`
+
+**Starting the program with the built executable:**\
+1. Copy Kunskapskontroll 3.exe, Kunskapskontroll 3.dll and Kunskapskontroll 3.runtimeconfig.json from bin\Debug\net10.0 to a directory of your choice
+2. Double click or otherwise activate Kunskapskontroll 3.exe
+3. Have fun
+
+If you want to play with full functionality, using different house rules, copy RuleSet.txt to the same directory.
+
 **Program components:**\
 **Menu.** Upon starting the computer program, the player will see a menu where the player(s) can choose to: (I) Lägg till spelare/add new player (II) Ta bort spelare/remove a player (III) Visa Spelarstatistik/show historical player statistics (IV) Börja spela/start a new game, and (V) Avsluta spelet/Exit game. When option (IV) is chosen, a submenu will appear on the console. Here the player(s) will be able to chose the different settings (house-rules) for the game. Two common house-rules that are used in the casino have been added as a full set of preset options to be chosen at the convenience of a player. These are options 1 and 2. After chosing a pre-set of rules, the game will start. Note: The player(s) might have to add themselves as players before starting a game.
 
