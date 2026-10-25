@@ -15,12 +15,12 @@
 **Goal:**
 Card game against the computer (dealer) to try to achieve the total value of 21, or to be as close to it as possible, without exceeding it.
 
-**Starting the program from VS Code:**\
+**Starting the program from VS Code:**
 1. Install .NET SDK in VS Code
 2. Open a terminal in the project folder where Kunskapskontroll 3.csproj is located
 3. Run the command `dotnet run`
 
-**Starting the program with the built executable:**\
+**Starting the program with the built executable:**
 1. Copy Kunskapskontroll 3.exe, Kunskapskontroll 3.dll and Kunskapskontroll 3.runtimeconfig.json from bin\Debug\net10.0 to a directory of your choice
 2. Double click or otherwise activate Kunskapskontroll 3.exe
 3. Have fun
