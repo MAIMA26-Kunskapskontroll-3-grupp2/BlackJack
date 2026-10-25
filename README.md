@@ -2,7 +2,7 @@
 #### **Creators:**
 * Tomas Törnkvist (TT), Github: tomastornkvist
 * Gantiana Haliti (GH), Github: Gentianahaliti
-* Arne Hagman (AH), Github: nhagman-creator
+* Arne Hagman (AH), Github: nhagman-creator & Unknown
 * Ai Doan (AD), Github: Chiminii (Left the programme about half way through the assignment)
 #### **Date:**          22 Oct 2026
 #### **Program:**       MAI26MA
